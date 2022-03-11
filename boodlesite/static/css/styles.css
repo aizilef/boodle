@@ -1,3 +1,116 @@
 h1 {
     background-color: blue;
 }
+/* nav bar */
+nav {
+    background: black;
+    top: 0;
+    width: 100%;
+    transition: all 0.5s;
+    position: relative;
+    z-index: 1;
+  }
+
+  .fixed-nav nav {
+     position: fixed;
+    box-shadow 0 5px black;
+  }
+  
+  nav ul {
+    margin: 0;
+    padding:0;
+    list-style: none;
+    display: flex;
+  }
+  
+  nav li {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  li.logo {
+    max-width: 0;
+    overflow: hidden;
+    background: white;
+    transition: all .5s;
+    font-weight: 600;
+    font-size: 30px;
+  }
+  
+  li.logo a {
+    color: black;
+  }
+  
+  nav a {
+    text-decoration: none;
+    padding: 20px;
+    display: inline-block;
+    color: white;
+    transition: all 0.2s;
+  }
+
+  /* nav bar end */
+
+.footer{
+    background-color: black;
+    color: #f8edeb;
+    display: flex;
+    justify-content: center;
+}
+
+.footer p { flex: 0 1 800px; padding: 8px 24px;}
+
+
+/* cards */
+
+.cards {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .cards img {
+    float: left;
+    display: block;
+    margin: 10px 15px 10px 0;
+    object-fit: cover;
+    width:80px;
+    height:80px;
+    border-radius: 100%;
+    border: 2px dotted black;
+    shape-outside: circle(50%);
+  }
+  
+  .cards li {
+    background-color: #f0f0f0;
+    border: 1px dotted #c3a9ff;
+    margin: 0 10px 20px 10px;
+    padding: 8px 16px;
+    border-radius: 5px;
+    flex: 1 1 480px;
+    display:flex;
+    align-items: center;
+    
+  }
+
+  .cards p {
+
+
+  }
+
+
+  /* cards end */
+
+  /* auction view */
+
+  .product-info{
+      padding: 8px 16px;
+  }
+  /* auction view end */
+
+
+

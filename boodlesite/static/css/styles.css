@@ -1,3 +1,12 @@
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  height: 100%;
+  font-size: 11pt;
+  color: #3d3838;
+}
+
 h1 {
     background-color: blue;
 }
@@ -12,7 +21,7 @@ nav {
   }
 
   .fixed-nav nav {
-     position: fixed;
+    position: fixed;
     box-shadow 0 5px black;
   }
   
@@ -64,6 +73,38 @@ nav {
 .footer p { flex: 0 1 800px; padding: 8px 24px;}
 
 
+/* homepage happening now */
+@media(max-width:480px){
+  .event-container{
+      display: flex;
+      flex-direction: column;
+  }
+
+  .event{ flex: 1 1 auto; }
+}
+
+.event-container{
+  display: flex;
+  justify-content: center;
+  background-color: #ffc2c2;
+  padding: 8px;
+  border: 2px solid black;
+}
+
+.event {
+  flex: 0 1 240px;
+  margin: 8px;
+  background-color: white;
+}
+
+.event img {
+  max-width: 100%;
+  object-fit:cover;
+}
+
+.event-text{ padding: 16px; text-align: center; }
+
+
 /* cards */
 
 .cards {
@@ -101,7 +142,6 @@ nav {
 
 
   }
-
 
   /* cards end */
 

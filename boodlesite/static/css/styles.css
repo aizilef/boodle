@@ -5,6 +5,7 @@ body {
   height: 100%;
   font-size: 11pt;
   color: #3d3838;
+  /* background-color: black; */
 }
 
 .carousel-item img {
@@ -92,6 +93,7 @@ nav {
 }
 
 .event-container{
+  margin: 50px;
   display: flex;
   justify-content: center;
   background-color: #ffc2c2;
@@ -159,6 +161,15 @@ nav {
       padding: 8px 16px;
   }
   /* auction view end */
+  
+  .slick-prev:before {
+    color: black !important;
+  }
+
+  .slick-next:before {
+    color: black !important;
+  }
+
 
 
 

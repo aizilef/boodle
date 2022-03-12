@@ -5,7 +5,11 @@ body {
   height: 100%;
   font-size: 11pt;
   color: #3d3838;
+<<<<<<< HEAD
   background-color: black;
+=======
+  /* background-color: black; */
+>>>>>>> 8f1f8c3028c012cf2653c3f58224f0a116945f2c
 }
 
 .carousel-item img {
@@ -103,6 +107,7 @@ nav {
 }
 
 .event-container{
+  margin: 50px;
   display: flex;
   justify-content: center;
   background-color: #ffc2c2;
@@ -171,6 +176,15 @@ nav {
       padding: 8px 16px;
   }
   /* auction view end */
+  
+  .slick-prev:before {
+    color: black !important;
+  }
+
+  .slick-next:before {
+    color: black !important;
+  }
+
 
 
 

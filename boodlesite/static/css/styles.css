@@ -7,9 +7,11 @@ body {
   color: #3d3838;
 }
 
-h1 {
-    background-color: blue;
+.carousel-item img {
+  max-height: 600px;
+  min-width: auto;
 }
+
 /* nav bar */
 nav {
     background: black;
@@ -74,6 +76,12 @@ nav {
 
 
 /* homepage happening now */
+
+.title-container {
+  display: flex;
+  padding: 8px 32px;
+  justify-content: center;
+}
 @media(max-width:480px){
   .event-container{
       display: flex;
@@ -88,7 +96,7 @@ nav {
   justify-content: center;
   background-color: #ffc2c2;
   padding: 8px;
-  border: 2px solid black;
+  border: 2px dotted black;
 }
 
 .event {

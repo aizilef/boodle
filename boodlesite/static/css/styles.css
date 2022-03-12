@@ -5,6 +5,7 @@ body {
   height: 100%;
   font-size: 11pt;
   color: #3d3838;
+  background-color: black;
 }
 
 .carousel-item img {
@@ -65,14 +66,24 @@ nav {
 
   /* nav bar end */
 
-.footer{
+.footer-basic{
     background-color: black;
     color: #f8edeb;
     display: flex;
     justify-content: center;
 }
 
-.footer p { flex: 0 1 800px; padding: 8px 24px;}
+.copyright { 
+  flex: 0 1 800px; 
+  padding: 8px 24px;
+}
+
+/* homepage about section */
+.about-image {
+  display: flex;
+  height: 300px;
+  width: 200px;
+}
 
 
 /* homepage happening now */
@@ -97,6 +108,7 @@ nav {
   background-color: #ffc2c2;
   padding: 8px;
   border: 2px dotted black;
+  margin: 32px;
 }
 
 .event {

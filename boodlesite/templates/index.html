@@ -1,12 +1,15 @@
 {% extends 'boodlesite\templates\base.html' %}
 {% load static %}
 
+
 {% block title %}Boodle Homepage{% endblock %}
 
 {% block styles %}
 {% endblock %}
 
 {% block content %}
+
+<!-- banner  -->
 <div id="container-fluid">
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
@@ -31,8 +34,8 @@
     </div>
 </div>
 
-<h1>About</h1>
-<div class="container">
+<div class="title-container"><h1> About Us </h1></div>
+<div class="container-fluid">
     <div class="row">
         <div class="col">
             <p>Boodle was founded by 4 amaing talented software engineers, who are college studyents based in Metro Manila who go to Ateneo de Manila University. </p>
@@ -41,82 +44,97 @@
             <img src="../static/media/dancinginthekitchen.jpg">
         </div>
     </div>
+</div>
 
-<h1 class="header">HAPPENING NOW!!</h1>
+<div class="title-container"><h1> Happening Now </h1></div>
+
 <div class="event-container">
+    {% if auctions_now %}
+    {% for auction in auctions_now %}
     <div class="event">
-        <img src="../static/media/beast.jpg" alt="pastel pink flower on pastel blue background">
-        <div class="event-text">
-            <h3>Soft Tones</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et dolor non leo porta ornare ac nec orci. Sed porta elementum nunc, sit amet consequat leo aliquam ac.</p>
-        </div>
-    </div>
+        <!-- <img src="../static/media/beast.jpg" alt=""> -->
+        <img src="http://via.placeholder.com/640x360" alt="">
 
-    <div class="event">
-        <img src="../static/media/beast.jpg" alt="pastel pink flower on pastel blue background">
         <div class="event-text">
-            <h3 class="event-title">Soft Tones</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et dolor non leo porta ornare ac nec orci. Sed porta elementum nunc, sit amet consequat leo aliquam ac.</p>
+            <a href="{% url 'auctionid' auction.auctionid %}">
+                <h3>{{ auction.title }}</h3>
+            </a>
+            <p>{{ auction.info }}</p>
         </div>
     </div>
-
-    <div class="event">
-        <img src="../static/media/beast.jpg" alt="pastel pink flower on pastel blue background">
-        <div class="event-text">
-            <h3>Soft Tones</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et dolor non leo porta ornare ac nec orci. Sed porta elementum nunc, sit amet consequat leo aliquam ac.</p>
-        </div>
-    </div>
-
-    <div class="event">
-        <img src="../static/media/beast.jpg" alt="pastel pink flower on pastel blue background">
-        <div class="event-text">
-            <h3 class="event-title">Soft Tones</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et dolor non leo porta ornare ac nec orci. Sed porta elementum nunc, sit amet consequat leo aliquam ac.</p>
-        </div>
-    </div>
+    {% endfor %}
+    {% else %}
+    <h3> no auctions happening yet.</h3>
+    {% endif %}
 
 </div>
-</div>
-</div>
 
-<h1 class="header">HAPPENING SOON!!</h1>
-<div class="happening-soon">
-    <div class="event-container">
-        <div class="event">
-            <img src="../static/media/beast.jpg" alt="pastel pink flower on pastel blue background">
-            <div class="event-text">
-                <h3>Soft Tones</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et dolor non leo porta ornare ac nec orci. Sed porta elementum nunc, sit amet consequat leo aliquam ac.</p>
-            </div>
-        </div>
+<div class="title-container"><h1> Upcoming Events </h1></div>
 
-        <div class="event">
-            <img src="../static/media/beast.jpg" alt="pastel pink flower on pastel blue background">
-            <div class="event-text">
-                <h3>Soft Tones</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et dolor non leo porta ornare ac nec orci. Sed porta elementum nunc, sit amet consequat leo aliquam ac.</p>
-            </div>
+<div class="event-container">
+    {% if auctions_soon %}
+    {% for auction in auctions_soon %}
+    <div class="event">
+        <!-- <img src="../static/media/beast.jpg" alt=""> -->
+        <img src="http://via.placeholder.com/640x360" alt="">
+
+        <div class="event-text">
+            <a href="{% url 'auctionid' auction.auctionid %}">
+                <h3>{{ auction.title }}</h3>
+            </a>
+            <p>{{ auction.info }}</p>
         </div>
-    
-        <div class="event">
-            <img src="../static/media/beast.jpg" alt="pastel pink flower on pastel blue background">
-            <div class="event-text">
-                <h3 class="event-title">Soft Tones</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et dolor non leo porta ornare ac nec orci. Sed porta elementum nunc, sit amet consequat leo aliquam ac.</p>
-            </div>
-        </div>
-    
-        <div class="event">
-            <img src="../static/media/beast.jpg" alt="pastel pink flower on pastel blue background">
-            <div class="event-text">
-                <h3 class="event-title">Soft Tones</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et dolor non leo porta ornare ac nec orci. Sed porta elementum nunc, sit amet consequat leo aliquam ac.</p>
-            </div>
-        </div>
-    
     </div>
+    {% endfor %}
+    {% else %}
+    <h3> no auctions happening soon.</h3>
+    {% endif %}
+
 </div>
 
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.event-container').slick({
+  dots: true,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        arrows: true,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        arrows: true,
+
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        arrows: true,
+
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+    // You can unslick at a given breakpoint now by adding:
+    // settings: "unslick"
+    // instead of a settings object
+  ]
+});
+});
+</script>
 
 {% endblock %}

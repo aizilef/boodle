@@ -24,26 +24,29 @@ def homepage(request):
         'auctions_now': auctions_now,
         'auctions_soon': auctions_soon
     }
-   
+
     return render(request, "boodlesite/templates/index.html",context)    
 
 def auction(request, pk):
     # Current auction ID
     auction = Auction.objects.get(pk=pk)
 
+    # to display item name, information
+    items = Item.objects.all()
+    #items = Item.objects.values_list('itemname', 'itemspecs')
+    for item in items:
+        print(item)
+
     # print('auction', pk, auction)
     # print(auction.title,auction.info)
+
+    context = {
+        'items': items
+    }
 
     if auction.auctionend < datetime.now():
         return HttpResponse("This auction has already passed.")
     elif auction.auctionstart > datetime.now():
         return HttpResponse("This auction has not yet started.")
     else:
-        return render(request, "boodlesite/templates/auction.html")    
-
-
-   
-
-
-
-
+        return render(request, "boodlesite/templates/auction.html", context)    

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from .models import *
+from .forms import *
 
 from datetime import datetime, timedelta
 
@@ -24,19 +25,20 @@ def homepage(request):
         'auctions_now': auctions_now,
         'auctions_soon': auctions_soon
     }
-   
+
     return render(request, "boodlesite/templates/index.html",context)    
 
 def auction(request, pk):
     # Current auction ID
     auction = Auction.objects.get(pk=pk)
+    auction_bid = AuctionBid.objects.get(auctionid = pk)
 
     auction_item = auction.itemid
 
-
     context = {
         'item_name':auction_item.itemname,
-        'item_specs': auction_item.itemspecs
+        'item_specs': auction_item.itemspecs,
+        'item_bid' : auction_bid.amount
     }
 
     if auction.auctionend < datetime.now():
@@ -45,10 +47,3 @@ def auction(request, pk):
         return HttpResponse("This auction has not yet started.")
     else:
         return render(request, "boodlesite/templates/auction.html",context)    
-
-
-   
-
-
-
-

@@ -31,15 +31,20 @@ def auction(request, pk):
     # Current auction ID
     auction = Auction.objects.get(pk=pk)
 
-    # print('auction', pk, auction)
-    # print(auction.title,auction.info)
+    auction_item = auction.itemid
+
+
+    context = {
+        'item_name':auction_item.itemname,
+        'item_specs': auction_item.itemspecs
+    }
 
     if auction.auctionend < datetime.now():
         return HttpResponse("This auction has already passed.")
     elif auction.auctionstart > datetime.now():
         return HttpResponse("This auction has not yet started.")
     else:
-        return render(request, "boodlesite/templates/auction.html")    
+        return render(request, "boodlesite/templates/auction.html",context)    
 
 
    

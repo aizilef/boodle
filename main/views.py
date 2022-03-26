@@ -31,14 +31,19 @@ def homepage(request):
 def auction(request, pk):
     # Current auction ID
     auction = Auction.objects.get(pk=pk)
-    auction_bid = AuctionBid.objects.filter(auctionid=pk)
+    auction_bids = AuctionBid.objects.filter(auctionid=pk)
 
     auction_item = auction.itemid
+
+    print(auction_bids)
+    print(type(auction_bids))
+    for bid in auction_bids:
+        print(bid.amount)
 
     context = {
         'item_name':auction_item.itemname,
         'item_specs': auction_item.itemspecs,
-        'item_bid' : auction_bid.amount,
+        'auction_bids' : auction_bids,
         'item_floor_price': auction_item.floorprice
         # need to make floor price object here
     }

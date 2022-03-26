@@ -64,16 +64,18 @@ a{% extends 'boodlesite\templates\base.html' %}
                 </div>
                 
                 <div class="modal-body">
-                  <form>
+                  <form action="auction/<int:pk>/" method="post">
+                    
                     <div class="form-group">
+                      {% csrf_token %}
                       <label for="recipient-name" class="col-form-label">Enter Bid amount:</label>
                       <form id="form" method="post">
                       <input type="number" class="form-control" id="amount">
-                      {% csrf_token %}
                       </form>
-                      
+                      <!--add an if else statement here re. floor price-->
                     </div>
                   </form>
+                
                 </div>
                 
                 <div class="modal-footer">

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 
 from .models import *
@@ -35,6 +36,12 @@ def auction(request, pk):
 
     auction_item = auction.itemid
 
+    form = PlaceBidForm()
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        print("Printing POST: ", request.POST)
+
     print(auction_bids)
     print(type(auction_bids))
     for bid in auction_bids:
@@ -44,7 +51,8 @@ def auction(request, pk):
         'item_name':auction_item.itemname,
         'item_specs': auction_item.itemspecs,
         'auction_bids' : auction_bids,
-        'item_floor_price': auction_item.floorprice
+        'item_floor_price': auction_item.floorprice,
+        'form' : form
         # need to make floor price object here
     }
 

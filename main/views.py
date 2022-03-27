@@ -44,10 +44,6 @@ def auction(request, pk):
         highest_bid = auction_item.floorprice
     else:
         highest_bid = auction_bids[0]
-        
-    print("This is the auction bids: ", auction_bids)
-    prev_amt = AuctionBid.objects.latest('amount');
-    print(prev_amt)
 
     form = PlaceBidForm()
     if request.method == 'POST':
@@ -58,16 +54,14 @@ def auction(request, pk):
                 new_bid = AuctionBid(amount=amount,bidtime=datetime.now(),auctionid=auction)
                 new_bid.save()
                 return redirect(f"/auction/{pk}")
-            else:
-                raise ValidationError("ERROR")
-
 
     context = {
         'item_name':auction_item.itemname,
         'item_specs': auction_item.itemspecs,
         'auction_bids' : auction_bids,
         'item_floor_price': auction_item.floorprice,
-        'highest_bid':highest_bid,
+        'highest_bid': highest_bid,
+        'auction_end':  auction.auctionend,
         'form' : form
     }
 

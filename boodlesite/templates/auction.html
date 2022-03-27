@@ -74,29 +74,28 @@ a{% extends 'boodlesite\templates\base.html' %}
             <div class="modal-body">
               <form action="" method="POST">
                 <div class="form-group">
+                  <h1>Current Highest Bid: PHP {{highest_bid.amount}}</h1>
                   <label for="recipient-name" class="col-form-label">Enter Bid amount:</label>
-                        {% csrf_token %} 
-                        {{ form }}
+                  {% csrf_token %}
+                  {{ form }}
+                  <input type="number" class="form-control" id="amount">
+                  {% if form.amount.errors %}
+                  <ol>
+                    {% for error in form.amount.errors %}
+                    <li><strong>{{ error|escape }}</strong></li>
+                    {% endfor %}
+                  </ol>
+                  {% endif %}
 
-                        <input type="number" class="form-control" id="amount">
-                      <!--add an if else statement here re. floor price-->
-                      {% for bid in auction_bids %}
-                        {% if bid.amount > item_floor_price %}
-                        <!--How to make it post the bid and end up in data base and page-->
-
-                        {% else %}
-                          <h4>Please enter a price greater than the item's floor price</h4>
-                        {% endif %}
-                      {% endfor %}
                 </div>
             </div>
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button type = "submit" class="btn btn-secondary" name = "Submit"> Submit </button>
+              <button type="submit" class="btn btn-secondary" name="Submit"> Submit </button>
               <!-- {% comment %} <button type="submit" class="btn btn-primary" value="Submit">Confirm Bid</button> {% endcomment %}  -->
-            </div> 
-          </form>
+            </div>
+            </form>
 
           </div>
         </div>
@@ -108,7 +107,7 @@ a{% extends 'boodlesite\templates\base.html' %}
         {% if auction_bids %}
         {% for bid in auction_bids %}
         <li><img src="" alt="">
-          <p>Alice offered {{ bid.amount }}</p>
+          <p>User offered {{ bid.amount }}</p>
           <p>{{bid.bidtime | timesince}} ago </p>
 
         </li>

@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 
+from django.core.exceptions import ValidationError
+
+
 from .models import *
 from .forms import *
 
@@ -32,28 +35,37 @@ def homepage(request):
 def auction(request, pk):
     # Current auction ID
     auction = Auction.objects.get(pk=pk)
-    auction_bids = AuctionBid.objects.filter(auctionid=pk)
-
+    # Item for auction
     auction_item = auction.itemid
+    # Auction bids
+    auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
+
+    if not auction_bids:
+        highest_bid = auction_item.floorprice
+    else:
+        highest_bid = auction_bids[0]
+        
 
     form = PlaceBidForm()
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        print("Printing POST: ", request.POST)
+        form = PlaceBidForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            if amount > highest_bid.amount:
+                new_bid = AuctionBid(amount=amount,bidtime=datetime.now(),auctionid=auction)
+                new_bid.save()
+                return redirect(f"/auction/{pk}")
+            else:
+                raise ValidationError("ERROR")
 
-    print(auction_bids)
-    print(type(auction_bids))
-    for bid in auction_bids:
-        print(bid.amount)
 
     context = {
         'item_name':auction_item.itemname,
         'item_specs': auction_item.itemspecs,
         'auction_bids' : auction_bids,
         'item_floor_price': auction_item.floorprice,
+        'highest_bid':highest_bid,
         'form' : form
-        # need to make floor price object here
     }
 
     if auction.auctionend < datetime.now():

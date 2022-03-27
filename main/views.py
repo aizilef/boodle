@@ -45,6 +45,9 @@ def auction(request, pk):
     else:
         highest_bid = auction_bids[0]
         
+    print("This is the auction bids: ", auction_bids)
+    prev_amt = AuctionBid.objects.latest('amount');
+    print(prev_amt)
 
     form = PlaceBidForm()
     if request.method == 'POST':

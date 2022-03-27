@@ -30,6 +30,9 @@ class AuctionBid(models.Model):
     class Meta:
         managed = False
         db_table = 'auctionbid'
+    
+    def __str__(self):
+        return '%d' % (self.amount)
 
 
 class AuthGroup(models.Model):

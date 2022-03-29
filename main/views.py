@@ -40,20 +40,23 @@ def auction(request, pk):
     # Auction bids
     auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
 
-    if not auction_bids:
-        highest_bid = auction_item.floorprice
-    else:
-        highest_bid = auction_bids[0]
+    highest_bid = auction_item.floorprice
 
-    form = PlaceBidForm()
+    if auction_bids:
+        highest_bid = auction_bids[0].amount
+
+    form = PlaceBidForm(initial={'auctionid':auction})
     if request.method == 'POST':
-        form = PlaceBidForm(request.POST)
+        form = PlaceBidForm(request.POST,initial={'auctionid':auction})
         if form.is_valid():
-            amount = form.cleaned_data['amount']
-            if amount > highest_bid.amount:
+            try:
+                amount = form.cleaned_data['amount']
                 new_bid = AuctionBid(amount=amount,bidtime=datetime.now(),auctionid=auction)
                 new_bid.save()
                 return redirect(f"/auction/{pk}")
+            except:
+                pass
+
 
     context = {
         'item_name':auction_item.itemname,

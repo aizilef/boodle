@@ -1,4 +1,4 @@
-a{% extends 'boodlesite\templates\base.html' %}
+{% extends 'boodlesite\templates\base.html' %}
 {% load static %}
 
 {% block title %}Auction{% endblock %}
@@ -12,7 +12,7 @@ a{% extends 'boodlesite\templates\base.html' %}
 <div class="container">
   <div class="row">
     <div class="col-lg-7 col-md-6">
-    <!-- Countdown display-->
+      <!-- Countdown display-->
       <div class="test">
         <!-- Format: 
           Auction ends at: <Date> 
@@ -20,8 +20,7 @@ a{% extends 'boodlesite\templates\base.html' %}
         <h4> Auction ends at: {{ auction_end }} </h4>
       </div>
 
-    <!--product display -->  
-      product display div
+      <!--product display -->
 
       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
@@ -55,7 +54,6 @@ a{% extends 'boodlesite\templates\base.html' %}
     </div>
 
     <div class="col-lg-5 col-md-6">
-      product info div
 
       <div class="product-info" style="border: 2px dotted black;">
 
@@ -63,11 +61,12 @@ a{% extends 'boodlesite\templates\base.html' %}
 
         <h4>Product Specifications</h4>
         <p>{{ item_specs }}</p>
+        <p>Starting at: {{item_floor_price}}</p>
       </div>
 
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#placeBidModal"
         data-whatever="@mdo">Place Bid</button>
-    
+
 
       <div class="modal fade" id="placeBidModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -83,7 +82,7 @@ a{% extends 'boodlesite\templates\base.html' %}
             <div class="modal-body">
               <form action="" method="POST">
                 <div class="form-group">
-                  <h3>Current Highest Bid: PHP {{highest_bid.amount}}</h3>
+                  <h3>Current Highest Bid: PHP {{highest_bid}}</h3>
                   {% csrf_token %}
                   {{ form }}
                 </div>
@@ -100,7 +99,7 @@ a{% extends 'boodlesite\templates\base.html' %}
       </div>
 
 
-    <!-- latest bids / history -->
+      <!-- latest bids / history -->
       <h1>Latest Bids</h1>
       <ul class="cards">
 
@@ -114,7 +113,7 @@ a{% extends 'boodlesite\templates\base.html' %}
         </li>
         {% endfor %}
         {% else %}
-        <h3> no bids placed yet.</h3>
+        <h3> No bids have been placed for this item yet.</h3>
         {% endif %}
 
       </ul>

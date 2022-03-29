@@ -3,17 +3,28 @@ from django.forms import (ModelForm,
     TextInput, Textarea, widgets)
 from .models import *
 
+from django.core.exceptions import ValidationError
+    
 class PlaceBidForm(forms.ModelForm):
     class Meta:
         model = AuctionBid
-        fields = ['amount']
+        fields = ['amount','auctionid']
+        widgets = {'auctionid': forms.HiddenInput()}
 
-    def clean_amount(self):
-        form_amount = self.cleaned_data.get("amount")
-        prev_amt = AuctionBid.objects.latest("amount")
-        prev_amt_cleaned = prev_amt.amount
+    def clean(self):
+        super().clean()
+        form_amount = self.cleaned_data.get('amount')
+        auction = self.cleaned_data.get('auctionid')
 
-        if prev_amt_cleaned > form_amount:
-            raise forms.ValidationError("Please Put Higher Bid")
+        auction_item = Item.objects.get(auction=auction)
 
-        return form_amount
+        auction_bids = AuctionBid.objects.filter(auctionid=auction)
+        
+        if not auction_bids:
+            highest_bid = auction_item.floorprice
+            if form_amount < highest_bid:
+                raise ValidationError('Please enter an amount greater than or equal to the floorprice.')
+        else:
+            highest_bid = auction_bids.latest('bidtime').amount
+            if form_amount <= highest_bid:
+                raise ValidationError('Please enter an amount higher than the current highest bid.')

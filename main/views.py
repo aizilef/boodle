@@ -71,6 +71,10 @@ def auction(request, pk):
     if auction.auctionend < datetime.now():
         return HttpResponse("This auction has already passed.")
     elif auction.auctionstart > datetime.now():
-        return HttpResponse("This auction has not yet started.")
+        #return HttpResponse("This auction has not yet started.")
+        return render(request, "boodlesite/templates/error404.html")
     else:
         return render(request, "boodlesite/templates/auction.html",context)    
+
+def error404(request):
+    return render(request, "boodlesite/templates/error404.html")

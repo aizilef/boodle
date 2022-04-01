@@ -78,3 +78,12 @@ def auction(request, pk):
 
 def error404(request):
     return render(request, "boodlesite/templates/error404.html")
+
+def mystore(request):
+    return render(request, "boodlesite/templates/store.html")
+
+def addItem(request):
+    return render(request, "boodlesite/templates/additem.html")
+
+def startAuction(request):
+    return render(request, "boodlesite/templates/startauction.html")

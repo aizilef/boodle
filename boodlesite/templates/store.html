@@ -1,0 +1,80 @@
+{% extends 'boodlesite\templates\base.html' %}
+{% load static %}
+
+
+{% block title %}My Store{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+
+<div class="store-container">
+    <div class="store-banner"><img src="https://www.w3schools.com/howto/img_snow_wide.jpg">
+        <div class="store-info">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+            <h1>{{ current_store.storename }}</h1>
+            <p>@username</p>
+            <button class="edit-shop-btn" type="button">Edit Shop Info</button>
+        </div>
+    </div>
+
+    <div class="sort-by">
+
+        <label for="items">Sort items by: </label>
+        <select id="items" name="items">
+            <option value="">A-Z</option>
+            <option value="">Oldest</option>
+            <option value="">Newest</option>
+
+            <option value="">Price (Low-High)</option>
+            <option value="">Price (High-Low) </option>
+        </select>
+    </div>
+
+    <div class="store-item-container">
+
+        {% if store_items %}
+        {% for item in store_items %}        
+        <div class="store-item">
+            <img src="https://www.kurin.com/wp-content/uploads/placeholder-square.jpg">
+            <div class="item-info">
+                <h4>{{ item.itemname }}</h4>
+                <p>{{item.itemspecs}} <span class="item-price">PHP {{item.floorprice}}</span></p>
+            </div>
+            <div class="item-btns"> <button>Auction</button> <button>Edit</button> <button>Delete</button>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h4 text-align="center"> Your Inventory is empty. </h4>
+        {% endif %}
+        <!-- <div class="store-item">
+            <img src="https://www.kurin.com/wp-content/uploads/placeholder-square.jpg">
+            <div class="item-info">
+                <h4>Itemname</h4>
+                <p>Itemdescription <span class="item-price">PHP 500</span></p>
+            </div>
+            <div class="item-btns"> <button>Auction</button> <button>Edit</button> <button>Delete</button>
+            </div>
+        </div> -->
+
+
+
+    </div>
+
+
+</div>
+
+<div class="store-btns-container">
+
+    <button type="button"><a href="/startauction">Start Auction</a></button>
+
+    <button type="button"><a href="{% url 'additemid' current_store.storeid %}">Add Item</a></button>
+</div>
+]
+</div>
+
+
+
+{% endblock %}

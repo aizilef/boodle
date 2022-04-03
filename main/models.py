@@ -151,7 +151,18 @@ class Item(models.Model):
     itemspecs = models.CharField(max_length=700)
     floorprice = models.DecimalField(max_digits=15, decimal_places=4)
     sellprice = models.DecimalField(max_digits=15, decimal_places=4, blank=True, null=True)
+    storeid = models.ForeignKey('Store', models.DO_NOTHING, db_column='storeid')
 
     class Meta:
         managed = False
         db_table = 'item'
+
+
+class Store(models.Model):
+    storeid = models.AutoField(primary_key=True)
+    storename = models.CharField(max_length=255)
+    storedesc = models.CharField(max_length=700)
+
+    class Meta:
+        managed = False
+        db_table = 'store'

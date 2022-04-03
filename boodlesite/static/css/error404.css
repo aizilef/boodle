@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10rem 5rem;
+    padding: 3rem;
+}
+
+.error404__message {
+    margin-left: 1rem;
+}
+
+.error404__icon {
+    margin-right: .5rem;
+}

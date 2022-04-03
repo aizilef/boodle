@@ -4,7 +4,6 @@ from django.http import HttpResponse
 
 from django.core.exceptions import ValidationError
 
-
 from .models import *
 from .forms import *
 
@@ -16,7 +15,7 @@ def homepage(request):
 
     # Filter by auctions happening right now
     auctions_now = Auction.objects.filter(auctionstart__lt=datetime.now(),auctionend__gt=datetime.now())
-    for auction in auctions_now:  #
+    for auction in auctions_now:
         print(auction)
 
     # Filter by auctions scheduled at most a week from now
@@ -27,12 +26,13 @@ def homepage(request):
 
     context = {
         'auctions_now': auctions_now,
-        'auctions_soon': auctions_soon
+        'auctions_soon': auctions_soon,
     }
 
     return render(request, "boodlesite/templates/index.html",context)    
 
 def auction(request, pk):
+
     # Current auction ID
     auction = Auction.objects.get(pk=pk)
     # Item for auction
@@ -65,7 +65,7 @@ def auction(request, pk):
         'item_floor_price': auction_item.floorprice,
         'highest_bid': highest_bid,
         'auction_end':  auction.auctionend,
-        'form' : form
+        'form' : form,
     }
 
     if auction.auctionend < datetime.now():
@@ -79,11 +79,60 @@ def auction(request, pk):
 def error404(request):
     return render(request, "boodlesite/templates/error404.html")
 
-def mystore(request):
-    return render(request, "boodlesite/templates/store.html")
+def tempstore(request): # temp view
 
-def addItem(request):
-    return render(request, "boodlesite/templates/additem.html")
+    #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
+    current_store = Store.objects.get(storeid=1)
+
+    context = {
+        'current_store':current_store #### used for navbar, access to store 1
+  
+    }
+
+    return render(request, "boodlesite/templates/tempstore.html", context)
+
+def mystore(request, pk):
+
+    #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
+    current_store = Store.objects.get(pk=pk)
+    store_items = Item.objects.filter(storeid=pk)
+
+    context = {
+        'current_store':current_store,
+        'store_items':store_items
+  
+    }
+
+    return render(request, "boodlesite/templates/store.html", context)
+
+def addItem(request, pk):
+
+    # Current Store, pk here is the storeid
+    current_store = Store.objects.get(pk=pk)
+
+    form = AddItemForm(initial={'storeid':current_store})
+
+    if request.method == 'POST':
+        form = AddItemForm(request.POST,initial={'storeid':current_store})
+        if form.is_valid():
+            form.save()
+            return redirect('storeid', pk=pk)
+
+    context = {
+        'form':form,
+        'current_store': current_store # access to store 1
+    }
+
+    return render(request, "boodlesite/templates/additem.html", context)
 
 def startAuction(request):
-    return render(request, "boodlesite/templates/startauction.html")
+
+    #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
+    current_store = Store.objects.get(storeid=1)
+
+    context = {
+        'current_store':current_store
+    }
+
+
+    return render(request, "boodlesite/templates/startauction.html", context)

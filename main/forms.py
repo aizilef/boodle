@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import (ModelForm, 
     TextInput, Textarea, widgets)
+from django.utils.translation import gettext_lazy as _
 from .models import *
 
 from django.core.exceptions import ValidationError
@@ -28,3 +29,15 @@ class PlaceBidForm(forms.ModelForm):
             highest_bid = auction_bids.latest('bidtime').amount
             if form_amount <= highest_bid:
                 raise ValidationError('Please enter an amount higher than the current highest bid.')
+
+class AddItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = ['itemname','itemspecs','floorprice','storeid']
+        widgets = {'storeid': forms.HiddenInput()}
+
+        labels = {
+            'itemname': _('Item Name'),
+            'itemspecs': _('Item Description'),
+            'floorprice': _('Floor Price')
+        }

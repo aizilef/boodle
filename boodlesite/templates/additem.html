@@ -16,10 +16,14 @@
             <div class="item-image-container"></div>
         </div>
         <div class=" col-lg-5 col-md-6">ITEM FORM CONTAINER
-            <div class="item-form-container"></div>
-
-            <button type="button">Add Item</button>
-
+            <div class="item-form-container">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                
+            </div>
+                <button type="submit" name="Add Item"> Add Item </button>
+            </form>
         </div>
     </div>
 </div>

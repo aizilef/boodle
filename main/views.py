@@ -136,3 +136,8 @@ def startAuction(request):
 
 
     return render(request, "boodlesite/templates/startauction.html", context)
+
+def myFavoriteAuctions(request):
+    # filter the favorites i think from auction tapos
+    # we need to add things like .add() and .remove() 
+    return render(request, "boodlesite/templates/favorites.html")

@@ -1,0 +1,32 @@
+{% extends 'boodlesite\templates\base.html' %}
+{% load static %}
+
+
+{% block title %}My favorite ongoing auctions{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+
+<!--Change auctions_now, auction to like favorites, favorite-->
+<div class="event-container">
+    {% if auctions_now %}
+    {% for auction in auctions_now %}
+    <div class="event">
+        {% comment %} <img src="http://via.placeholder.com/640x360" alt="">
+
+        <div class="event-text">
+            <a href="{% url 'auctionid' auction.auctionid %}">
+                <h3>{{ auction.title }}</h3>
+            </a>
+            <p>{{ auction.info }}</p>
+        </div> {% endcomment %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <h3> No Favorites.</h3>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

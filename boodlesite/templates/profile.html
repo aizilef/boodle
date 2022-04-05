@@ -2,14 +2,24 @@
 {% load static %}
 
 
-{% block title %}My favorite ongoing auctions{% endblock %}
+{% block title %}Profile{% endblock %}
 
 {% block styles %}
 {% endblock %}
 
 {% block content %}
-
-<h1>This is user's profile</h1>
+<div class="profile-container">
+    <div class="username-section profile-element">
+        <h2>This is user's profile</h2>
+    </div>
+    <div class-"user-img profile-element">
+        <img src="https://minimaltoolkit.com/images/randomdata/female/64.jpg" alt="profile-image">
+    </div>
+    <div class="btn-group profile-element" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary">My Store</button>
+        <button type="button" class="btn btn-primary">Edit Profile</button>
+    </div>
+</div>
 
 <!--Change auctions_now, auction to like favorites, favorite-->
 <div class="event-container">

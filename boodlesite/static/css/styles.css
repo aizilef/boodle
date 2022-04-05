@@ -24,7 +24,7 @@ nav {
 
 .fixed-nav nav {
   position: fixed;
-  box-shadow 0 5px black;
+  box-shadow: 0 5px black;
 }
 
 nav ul {
@@ -183,7 +183,7 @@ nav a {
 
 }
 
-.cards p {}
+/*.cards p {} */
 
 /* cards end */
 
@@ -324,4 +324,17 @@ nav a {
 .item-form-container {
   border: 2px solid black;
   padding: 1rem;
+}
+
+/* ?USER'S PROFILE */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-element {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
 }

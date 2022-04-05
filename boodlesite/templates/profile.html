@@ -9,11 +9,14 @@
 
 {% block content %}
 <div class="profile-container">
-    <div class="username-section profile-element">
-        <h2>This is user's profile</h2>
+    <div class="username-section displayname profile-element">
+        <h2>This is {{ displayname }}'s profile</h2>
     </div>
-    <div class-"user-img profile-element">
+    <div class-"user-img userimage profile-element">
         <img src="https://minimaltoolkit.com/images/randomdata/female/64.jpg" alt="profile-image">
+    </div>
+    <div class "username profile-element">
+        <h4> {{ username }} </h4>
     </div>
     <div class="btn-group profile-element" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-primary">My Store</button>

@@ -100,7 +100,6 @@ def mystore(request, pk):
     context = {
         'current_store':current_store,
         'store_items':store_items
-  
     }
 
     return render(request, "boodlesite/templates/store.html", context)
@@ -137,7 +136,26 @@ def startAuction(request):
 
     return render(request, "boodlesite/templates/startauction.html", context)
 
-def profile(request):
+def tempProfile(request): # temp view
+
+    #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
+    current_user =BoodleUser.objects.get(userid=1)
+
+    context = {
+        'current_user':current_user #### used for navbar, access to user1
+    }
+
+    return render(request, "boodlesite/templates/tempprofile.html", context)
+
+def profile(request, pk):
     # filter the favorites i think from auction tapos
     # we need to add things like .add() and .remove() 
-    return render(request, "boodlesite/templates/profile.html")
+    # get the user's information
+    current_user = BoodleUser.objects.get(pk=pk)
+    
+    context = {
+        'displayname': current_user.displayname,
+        'username':current_user.username,
+    }
+
+    return render(request, "boodlesite/templates/profile.html", context)

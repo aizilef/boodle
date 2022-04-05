@@ -30,9 +30,6 @@ class AuctionBid(models.Model):
     class Meta:
         managed = False
         db_table = 'auctionbid'
-    
-    def __str__(self):
-        return '%d' % (self.amount)
 
 
 class AuthGroup(models.Model):
@@ -101,6 +98,17 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class BoodleUser(models.Model):
+    userid = models.AutoField(primary_key=True)
+    displayname = models.CharField(max_length=255)
+    pword = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'boodleuser'
+
+
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -166,3 +174,13 @@ class Store(models.Model):
     class Meta:
         managed = False
         db_table = 'store'
+
+
+class UserFavorites(models.Model):
+    favoriteid = models.AutoField(primary_key=True)
+    userid = models.ForeignKey(BoodleUser, models.DO_NOTHING, db_column='userid')
+    auctionid = models.ForeignKey(Auction, models.DO_NOTHING, db_column='auctionid')
+
+    class Meta:
+        managed = False
+        db_table = 'userfavorites'

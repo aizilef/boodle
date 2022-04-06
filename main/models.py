@@ -21,6 +21,7 @@ class Auction(models.Model):
         db_table = 'auction'
 
 
+
 class AuctionBid(models.Model):
     bidno = models.AutoField(primary_key=True)
     amount = models.DecimalField(max_digits=15, decimal_places=4)
@@ -107,6 +108,7 @@ class BoodleUser(models.Model):
     class Meta:
         managed = False
         db_table = 'boodleuser'
+    
 
 
 class DjangoAdminLog(models.Model):
@@ -164,6 +166,8 @@ class Item(models.Model):
     class Meta:
         managed = False
         db_table = 'item'
+    def __str__(self):
+        return self.itemname
 
 
 class Store(models.Model):

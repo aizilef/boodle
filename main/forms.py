@@ -18,7 +18,6 @@ class PlaceBidForm(forms.ModelForm):
         auction = self.cleaned_data.get('auctionid')
 
         auction_item = Item.objects.get(auction=auction)
-
         auction_bids = AuctionBid.objects.filter(auctionid=auction)
         
         if not auction_bids:
@@ -46,4 +45,7 @@ class AddToFavoritesForm(forms.ModelForm):
     class Meta:
         model = UserFavorites
         fields = ['userid','auctionid']
-        widgets = {'auctionid': forms.HiddenInput()}
+        widgets = {
+            'auctionid': forms.HiddenInput(),
+            'userid': forms.HiddenInput()
+        }

@@ -159,3 +159,13 @@ def profile(request, pk):
     }
 
     return render(request, "boodlesite/templates/profile.html", context)
+
+def favorites(request, pk):
+    if request.method == 'POST':
+        favorite = Auction.objects.get(pk=pk)
+        # user = request.user
+        current_user = BoodleUser.objects.get(pk=pk)
+        current_user.favorites.add(favorite)
+        print("Favorited!")
+        #messages.add_message(request, messages.INFO, 'Deal Favorited.')
+        return redirect(f"/auction/{pk}")

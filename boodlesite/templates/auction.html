@@ -66,7 +66,12 @@
 
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#placeBidModal"
         data-whatever="@mdo">Place Bid</button>
-      <button type="button" class="btn btn-dark">Add to My favorites</button>
+      
+
+        <form method="POST" action="">
+          {% csrf_token %}
+          <input type="hidden" name="supporttype" />
+          <button type="button" class="btn btn-dark"><input type="submit" value="Add to My Favorites" /> </button>
 
       <!-- MODAL FOR BIDDING -->
       <div class="modal fade" id="placeBidModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

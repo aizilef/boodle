@@ -103,7 +103,6 @@ class BoodleUser(models.Model):
     displayname = models.CharField(max_length=255)
     pword = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
-    favorites = models.ManyToManyField(Auction, related_name='user_favorites', null=True, blank=True)
 
     class Meta:
         managed = False
@@ -177,7 +176,8 @@ class Store(models.Model):
         db_table = 'store'
 
 
-class Userfavorites(models.Model):
+class UserFavorites(models.Model):
+    favid = models.AutoField(primary_key=True)
     userid = models.ForeignKey(BoodleUser, models.DO_NOTHING, db_column='userid')
     auctionid = models.ForeignKey(Auction, models.DO_NOTHING, db_column='auctionid')
 

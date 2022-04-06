@@ -66,12 +66,39 @@
 
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#placeBidModal"
         data-whatever="@mdo">Place Bid</button>
-      
 
-        <form method="POST" action="">
-          {% csrf_token %}
-          <input type="hidden" name="supporttype" />
-          <button type="button" class="btn btn-dark"><input type="submit" value="Add to My Favorites" /> </button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addToFavoritesModal"
+        data-whatever="@mdo">Add to favorites</button>
+      
+      <!-- MODAL FOR ADD TO FAVORITES-->
+      <div class="modal fade" id="addToFavoritesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Confirm Add to Favorites</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <form action="" method="POST">
+                <div class="form-group">
+                  {% csrf_token %}
+                  {{ addtofavs_form }}
+                </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-secondary" name="Submit"> Submit </button>
+            </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
 
       <!-- MODAL FOR BIDDING -->
       <div class="modal fade" id="placeBidModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

@@ -41,3 +41,9 @@ class AddItemForm(forms.ModelForm):
             'itemspecs': _('Item Description'),
             'floorprice': _('Floor Price')
         }
+
+class AddToFavoritesForm(forms.ModelForm):
+    class Meta:
+        model = UserFavorites
+        fields = ['userid','auctionid']
+        widgets = {'auctionid': forms.HiddenInput()}

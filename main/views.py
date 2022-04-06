@@ -45,6 +45,7 @@ def auction(request, pk):
     if auction_bids:
         highest_bid = auction_bids[0].amount
 
+    # PLACE BID FORM
     form = PlaceBidForm(initial={'auctionid':auction})
     if request.method == 'POST':
         form = PlaceBidForm(request.POST,initial={'auctionid':auction})
@@ -56,6 +57,19 @@ def auction(request, pk):
                 return redirect(f"/auction/{pk}")
             except:
                 pass
+    
+    # ADD TO FAVORITES FORM
+    addtofavs_form = AddToFavoritesForm()
+    if request.method == 'POST':
+        addtofavs_form = AddToFavoritesForm(request.POST)
+        # if addtofavs_form.is_valid():
+            # try:
+            #     amount = addtofavs_form.cleaned_data['amount']
+            #     new_bid = AuctionBid(amount=amount,bidtime=datetime.now(),auctionid=auction)
+            #     new_bid.save()
+            #     return redirect(f"/auction/{pk}")
+            # except:
+            #     pass
 
 
     context = {
@@ -66,6 +80,7 @@ def auction(request, pk):
         'highest_bid': highest_bid,
         'auction_end':  auction.auctionend,
         'form' : form,
+        'addtofavs_form': addtofavs_form,
     }
 
     if auction.auctionend < datetime.now():
@@ -159,13 +174,3 @@ def profile(request, pk):
     }
 
     return render(request, "boodlesite/templates/profile.html", context)
-
-def favorites(request, pk):
-    if request.method == 'POST':
-        favorite = Auction.objects.get(pk=pk)
-        # user = request.user
-        current_user = BoodleUser.objects.get(pk=pk)
-        current_user.favorites.add(favorite)
-        print("Favorited!")
-        #messages.add_message(request, messages.INFO, 'Deal Favorited.')
-        return redirect(f"/auction/{pk}")

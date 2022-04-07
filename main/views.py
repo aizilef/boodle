@@ -40,46 +40,31 @@ def auction(request,pk):
     # Auction bids
     auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
     highest_bid = auction_item.floorprice
+    # get boodle user ID 
+    # userid = AuctionBid.objects.filter(userid=pk)
+    users = BoodleUser.objects.get(userid=3) 
+    userid = users.userid 
+    # getting the user name
+    #user_profile = users.displayname
 
     if auction_bids:
         highest_bid = auction_bids[0].amount
 
     # PLACE BID FORM AND ADD TO FAVES FORM
-    form = PlaceBidForm(initial={'auctionid':auction})
+    form = PlaceBidForm(initial={'auctionid':auction, 'boodleuserid':users})
     if request.method == 'POST':
-        form = PlaceBidForm(request.POST,initial={'auctionid':auction})
+        form = PlaceBidForm(request.POST,initial={'auctionid':auction, 'boodleuserid':users})
         if form.is_valid():
             try:
                 amount = form.cleaned_data['amount']
-                new_bid = AuctionBid(amount=amount,bidtime=datetime.now(),auctionid=auction)
+                # saves the bid by auctionid, amount, bidtime, boodleuserid
+                new_bid = AuctionBid(
+                    amount=amount, bidtime=datetime.now(),
+                    auctionid=auction, boodleuserid=userid)
                 new_bid.save()
                 return redirect(f"/auction/{pk}")
             except:
                 pass
-
-    # ADD TO FAVORITES FORM REQUEST POST
-    user = BoodleUser.objects.get(userid=1) # Current auction ID
-    user_profile = user.userid # specific id
-    auction_profile = auction.auctionid
-    addtofavs_form = AddToFavoritesForm(
-        initial={ 'auctionid':auction_profile, 'userid':user_profile
-    })
-    if request.method == 'POST' and not form.is_valid():
-        addtofavs_form = AddToFavoritesForm(
-            request.POST,
-            initial= {
-                'auctionid':auction_profile, 
-                'userid':user_profile
-            })
-        
-        print(request.POST)
-        if addtofavs_form.is_valid():
-            new_favorite = UserFavorites(auctionid=auction, user_profile=user)
-            new_favorite.save()
-            print(request.POST)
-            return redirect(f"/auction/{pk}")
-
-    print("This is: ", UserFavorites.objects.all())
 
     context = {
         'item_name':auction_item.itemname,
@@ -88,8 +73,8 @@ def auction(request,pk):
         'item_floor_price': auction_item.floorprice,
         'highest_bid': highest_bid,
         'auction_end':  auction.auctionend,
+        'user_profile': users.displayname,
         'form' : form,
-        'addtofavs_form': addtofavs_form,
     }
 
     if auction.auctionend < datetime.now():
@@ -110,7 +95,6 @@ def tempstore(request): # temp view
 
     context = {
         'current_store':current_store #### used for navbar, access to store 1
-
     }
 
     return render(request, "boodlesite/templates/tempstore.html", context)

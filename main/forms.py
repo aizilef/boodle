@@ -9,8 +9,8 @@ from django.core.exceptions import ValidationError
 class PlaceBidForm(forms.ModelForm):
     class Meta:
         model = AuctionBid
-        fields = ['amount','auctionid']
-        widgets = {'auctionid': forms.HiddenInput()}
+        fields = ['amount', 'boodleuserid', 'auctionid']
+        widgets = {'auctionid': forms.HiddenInput(), 'boodleuserid': forms.HiddenInput()}
 
     def clean(self):
         super().clean()
@@ -39,13 +39,4 @@ class AddItemForm(forms.ModelForm):
             'itemname': _('Item Name'),
             'itemspecs': _('Item Description'),
             'floorprice': _('Floor Price')
-        }
-
-class AddToFavoritesForm(forms.ModelForm):
-    class Meta:
-        model = UserFavorites
-        fields = ['userid','auctionid']
-        widgets = {
-            'auctionid': forms.HiddenInput(),
-            'userid': forms.HiddenInput()
         }

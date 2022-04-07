@@ -66,13 +66,6 @@
 
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#placeBidModal"
         data-whatever="@mdo">Place Bid</button>
-
-      <!-- MODAL FOR ADD TO FAVORITES-->
-      <form action="" method="POST">
-        {% csrf_token %}
-        {{ addtofavs_form }}
-        <input type="submit" value="Add to favorites" name="Submit__favorite"> 
-      </form>
     
       <!-- MODAL FOR BIDDING -->
       <div class="modal fade" id="placeBidModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -113,7 +106,7 @@
         {% if auction_bids %}
         {% for bid in auction_bids %}
         <li><img src="" alt="">
-          <p>User offered {{ bid.amount }}</p>
+          <p>{{user_profile}} offered {{ bid.amount }}</p>
           <p> &nbsp | &nbsp </p>
           <p>{{bid.bidtime | timesince}} ago </p>
 

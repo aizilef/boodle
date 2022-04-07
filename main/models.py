@@ -21,16 +21,19 @@ class Auction(models.Model):
         db_table = 'auction'
 
 
-
 class AuctionBid(models.Model):
     bidno = models.AutoField(primary_key=True)
     amount = models.DecimalField(max_digits=15, decimal_places=4)
     bidtime = models.DateTimeField(blank=True, null=True)
     auctionid = models.ForeignKey(Auction, models.DO_NOTHING, db_column='auctionid')
+    boodleuserid = models.ForeignKey('BoodleUser', models.DO_NOTHING, db_column='boodleuserid')
 
     class Meta:
         managed = False
         db_table = 'auctionbid'
+
+    def __str__(self):
+        return self.boodleuserid
 
 
 class AuthGroup(models.Model):
@@ -108,7 +111,6 @@ class BoodleUser(models.Model):
     class Meta:
         managed = False
         db_table = 'boodleuser'
-    
 
 
 class DjangoAdminLog(models.Model):
@@ -166,8 +168,6 @@ class Item(models.Model):
     class Meta:
         managed = False
         db_table = 'item'
-    def __str__(self):
-        return self.itemname
 
 
 class Store(models.Model):
@@ -178,14 +178,3 @@ class Store(models.Model):
     class Meta:
         managed = False
         db_table = 'store'
-
-
-class UserFavorites(models.Model):
-    favid = models.AutoField(primary_key=True)
-    userid = models.ForeignKey(BoodleUser, models.DO_NOTHING, db_column='userid')
-    auctionid = models.ForeignKey(Auction, models.DO_NOTHING, db_column='auctionid')
-
-    class Meta:
-        managed = False
-        db_table = 'userfavorites'
-        unique_together = (('userid', 'auctionid'),)

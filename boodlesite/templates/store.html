@@ -68,7 +68,7 @@
 
 <div class="store-btns-container">
 
-    <button type="button"><a href="/startauction">Start Auction</a></button>
+    <button type="button"><a href="{% url 'startauctionid' current_store.storeid %}">Start Auction</a></button>
 
     <button type="button"><a href="{% url 'additemid' current_store.storeid %}">Add Item</a></button>
 </div>

@@ -12,5 +12,6 @@ urlpatterns = [
     path('additem', addItem, name='additem'),
     path('additem/<int:pk>', addItem, name='additemid'),
     path('startauction', startAuction, name='startauction'),
+    path('startauction/<int:pk>', startAuction, name='startauctionid'),
 
 ]

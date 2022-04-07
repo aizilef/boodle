@@ -125,13 +125,26 @@ def addItem(request, pk):
 
     return render(request, "boodlesite/templates/additem.html", context)
 
-def startAuction(request):
+def startAuction(request, pk):
 
-    #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
-    current_store = Store.objects.get(storeid=1)
+    # pk is store id
+    current_store = Store.objects.get(pk=pk)
+    # get items under this store
+    store_items = Item.objects.filter(storeid=pk)
+
+    form = StartAuctionForm(initial={'storeid':current_store})
+
+    if request.method == 'POST':
+        form = StartAuctionForm(request.POST,initial={'storeid':current_store})
+        if form.is_valid():
+            form.save()
+            return redirect('storeid', pk=pk)
+
 
     context = {
-        'current_store':current_store
+        'current_store':current_store,
+        'store_items': store_items,
+        'form':form
     }
 
 

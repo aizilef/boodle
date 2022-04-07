@@ -157,6 +157,9 @@ class Item(models.Model):
         managed = False
         db_table = 'item'
 
+    def __str__(self):
+        return '%s' % (self.itemname)
+
 
 class Store(models.Model):
     storeid = models.AutoField(primary_key=True)

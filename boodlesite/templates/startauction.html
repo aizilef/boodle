@@ -9,11 +9,18 @@
 
 {% block content %}
 
-<div class="container"><button type="button">Save Auction</button>
+<div class="container">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+    
+        <button type="submit" name="savesauction">Save Auction</button>
+    </form>
 </div>
 
 <!-- Form fields:
 [Auction Title]
+[Auction Description]
 Drop down: [Select time for Auction]
 Set Auction timer:
 Start: 
@@ -21,7 +28,5 @@ Drop down: [Month] [Day] [Year] Time: [Hour] : [Minute]
 End:
 Drop down: [Month] [Day] [Year] Time: [Hour] : [Minute] 
 -->
-
-
 
 {% endblock %}

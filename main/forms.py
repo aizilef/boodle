@@ -1,3 +1,4 @@
+from datetime import datetime
 from django import forms
 from django.forms import (ModelForm, 
     TextInput, Textarea, widgets)
@@ -41,3 +42,23 @@ class AddItemForm(forms.ModelForm):
             'itemspecs': _('Item Description'),
             'floorprice': _('Floor Price')
         }
+
+class StartAuctionForm(forms.ModelForm):
+    class Meta:
+        model = Auction
+        fields = '__all__'
+
+        labels = {
+            'title': _('Auction Title'),
+            'info': _('Auction Description'),
+            'auctionstart': _('Starting time'),
+            'auctionend': _('Closing time'),
+            'itemid': _('Item up for auction')
+        }
+
+        # datetime_format = ['%Y-%m-%d %H:%M']
+        # widgets = { 'auctionstart' : forms.DateTimeInput(input_formats=['%Y-%m-%d %H:%M']), 'auctionend' : forms.DateTimeInput(input_formats=['%Y-%m-%d %H:%M'])}
+        # vv fix later, is missing time widget
+        # widgets = { 'auctionstart' : forms.SelectDateWidget, 'auctionend':forms.SelectDateWidget}
+        # 'itemid': forms.HiddenInput()}
+        

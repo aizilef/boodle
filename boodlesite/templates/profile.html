@@ -26,21 +26,28 @@
 
 <!--Change auctions_now, auction to like favorites, favorite-->
 <div class="event-container">
-    {% if auctions_now %}
-    {% for auction in auctions_now %}
-    <div class="event">
-        {% comment %} <img src="http://via.placeholder.com/640x360" alt="">
+    {% if auctionsOfUser %}
+        {% for id in auctionsOfUser %}
+            {% for aucid in auction %}
+        {% comment %} {% if id.auctionid == auctionsOfUser.auctionid %} {% endcomment %}
+            {% if id == aucid.auctionid %}
+                <div class="event">
+                    <img src="http://via.placeholder.com/640x360" alt="">
+                    <div class="event-text">
+                        <a href="{% url 'auctionid'  id.auctionid %}">
+                            <h3>{{  id.title }}</h3>
+                        </a>
+                        <p>{{ id.auctionend }}</p>
+                    </div> 
+                </div>
+            {% endif %}
 
-        <div class="event-text">
-            <a href="{% url 'auctionid' auction.auctionid %}">
-                <h3>{{ auction.title }}</h3>
-            </a>
-            <p>{{ auction.info }}</p>
-        </div> {% endcomment %}
-    </div>
-    {% endfor %}
+            {% endfor %}
+        
+        {% endfor %}
+    
     {% else %}
-    <h3> No Favorites.</h3>
+        <h3> No Favorites.</h3>
     {% endif %}
     </div>
 </div>

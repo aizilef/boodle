@@ -19,7 +19,10 @@ class Auction(models.Model):
     class Meta:
         managed = False
         db_table = 'auction'
-
+    
+    def __str__(self):
+        return f' {type(self.auctionid)}'
+        # return f'{type(self.title)} {type(self.auctionid)}'
 
 class AuctionBid(models.Model):
     bidno = models.AutoField(primary_key=True)
@@ -32,8 +35,8 @@ class AuctionBid(models.Model):
         managed = False
         db_table = 'auctionbid'
 
-    def __str__(self):
-        return self.boodleuserid
+    # def __str__(self):
+    #     return self.boodleuserid
 
 
 class AuthGroup(models.Model):

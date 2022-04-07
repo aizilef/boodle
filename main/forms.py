@@ -10,7 +10,9 @@ class PlaceBidForm(forms.ModelForm):
     class Meta:
         model = AuctionBid
         fields = ['amount', 'boodleuserid', 'auctionid']
-        widgets = {'auctionid': forms.HiddenInput(), 'boodleuserid': forms.HiddenInput()}
+        widgets = {'auctionid': forms.HiddenInput(), 
+            'boodleuserid': forms.HiddenInput()
+        }
 
     def clean(self):
         super().clean()

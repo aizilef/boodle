@@ -36,16 +36,15 @@ def auction(request,pk):
     # Current auction ID
     auction = Auction.objects.get(pk=pk)
     # Item for auction
-    auction_item = auction.itemid
+    auction_item = auction.itemid # this is the itemfk thru auction
     # Auction bids
     auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
-    highest_bid = auction_item.floorprice
+    highest_bid = auction_item.floorprice 
     # get boodle user ID 
-    # userid = AuctionBid.objects.filter(userid=pk)
-    users = BoodleUser.objects.get(userid=3) 
+    users = BoodleUser.objects.get(userid=1) 
     userid = users.userid 
     # getting the user name
-    #user_profile = users.displayname
+    # user_profile = users.displayname
 
     if auction_bids:
         highest_bid = auction_bids[0].amount
@@ -60,7 +59,7 @@ def auction(request,pk):
                 # saves the bid by auctionid, amount, bidtime, boodleuserid
                 new_bid = AuctionBid(
                     amount=amount, bidtime=datetime.now(),
-                    auctionid=auction, boodleuserid=userid)
+                    auctionid=auction, boodleuserid=users)
                 new_bid.save()
                 return redirect(f"/auction/{pk}")
             except:
@@ -147,23 +146,36 @@ def startAuction(request):
 def tempProfile(request): # temp view
 
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
-    current_user =BoodleUser.objects.get(userid=1)
+    user_one =BoodleUser.objects.get(userid=1)
+    user_two = BoodleUser.objects.get(userid=3)
 
     context = {
-        'current_user':current_user #### used for navbar, access to user1
+        'user_one':user_one, #### used for navbar, access to user1
+        'user_two':user_two, #### used for navbar, access to user1
     }
 
     return render(request, "boodlesite/templates/tempprofile.html", context)
 
 def profile(request, pk):
-    # filter the favorites i think from auction tapos
-    # we need to add things like .add() and .remove() 
-    # get the user's information
-    current_user = BoodleUser.objects.get(pk=pk)
     
+    current_user = BoodleUser.objects.get(pk=pk)
+    #auction bid user id = 3 --> bids user made --> know auctions g
+    bidsByUser = AuctionBid.objects.filter(boodleuserid=1)
+    auctionsOfUser = Auction.objects.all().distinct('auctionid')
+
+
+    #💫auctionsOfUser = Auction.objects.all().distinct('auctionid')
+    # get existing auctions for user's bids
+    auctions = Auction.objects.all()
+    for auction in auctionsOfUser:
+        print(auction)   
+
     context = {
         'displayname': current_user.displayname,
         'username':current_user.username,
+        'bidsByUser' : bidsByUser,
+        'auctionsOfUser': auctionsOfUser,
+        'auctions': auctions,
     }
 
     return render(request, "boodlesite/templates/profile.html", context)

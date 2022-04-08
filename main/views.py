@@ -41,7 +41,7 @@ def auction(request,pk):
     auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
     highest_bid = auction_item.floorprice 
     # get boodle user ID 
-    users = BoodleUser.objects.get(userid=1) 
+    users = BoodleUser.objects.get(userid=3) 
     userid = users.userid 
     # getting the user name
     # user_profile = users.displayname
@@ -160,15 +160,32 @@ def profile(request, pk):
     
     current_user = BoodleUser.objects.get(pk=pk)
     #auction bid user id = 3 --> bids user made --> know auctions g
-    bidsByUser = AuctionBid.objects.filter(boodleuserid=1)
-    auctionsOfUser = Auction.objects.all().distinct('auctionid')
+    bidsByUser = AuctionBid.objects.filter(boodleuserid=3).distinct('auctionid')
 
+    auctionsOfUser = Auction.objects.all().distinct('auctionid')
+    # for auction in auctionsOfUser:
+    #     print(auction)   
+    #     print(auction.title)
+    #     print(auction.auctionid)
+    
+    #Is of auctions (FK) in AuctionBid objects
+    idsOfAuction = []
+
+    for bid in bidsByUser:
+        for auction in auctionsOfUser:
+            if bid.auctionid == auction:
+                idsOfAuction.append(bid.auctionid)
+                
+                # print(auction.title)
+                # print(bid.auctionid)
+                # print("===============") #divider between auctions :3
+    print("These are the distinct auction IDs: ", idsOfAuction)
 
     #💫auctionsOfUser = Auction.objects.all().distinct('auctionid')
     # get existing auctions for user's bids
     auctions = Auction.objects.all()
-    for auction in auctionsOfUser:
-        print(auction)   
+    # for auction in auctionsOfUser:
+    #     print(auction)   
 
     context = {
         'displayname': current_user.displayname,
@@ -176,6 +193,7 @@ def profile(request, pk):
         'bidsByUser' : bidsByUser,
         'auctionsOfUser': auctionsOfUser,
         'auctions': auctions,
+        'idsOfAuction': idsOfAuction,
     }
 
     return render(request, "boodlesite/templates/profile.html", context)

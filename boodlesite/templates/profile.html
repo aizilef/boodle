@@ -27,28 +27,26 @@
 <!--Change auctions_now, auction to like favorites, favorite-->
 <div class="event-container">
     {% if auctionsOfUser %}
-        {% for id in auctionsOfUser %}
-            {% for aucid in auction %}
-        {% comment %} {% if id.auctionid == auctionsOfUser.auctionid %} {% endcomment %}
-            {% if id == aucid.auctionid %}
-                <div class="event">
-                    <img src="http://via.placeholder.com/640x360" alt="">
-                    <div class="event-text">
-                        <a href="{% url 'auctionid'  id.auctionid %}">
-                            <h3>{{  id.title }}</h3>
-                        </a>
-                        <p>{{ id.auctionend }}</p>
-                    </div> 
+    {% for id in idsOfAuction %} 
+        <div class="event">
+            <img src="http://via.placeholder.com/640x360" alt="">
+            <div class="event-text">
+                <a href="{% url 'auctionid'  id.auctionid %}">
+                    <h3>{{ id.title }}</h3>
+                </a>
+                <p>{{ id.auctionend }}</p>
+            </div> 
+            <input type="submit" value="remove auction">
+            
+            <!-- if button is clidked -->
+            <!-- id rmeove from ids of auctions -->
                 </div>
-            {% endif %}
-
-            {% endfor %}
-        
-        {% endfor %}
+    {% endfor %}
     
     {% else %}
         <h3> No Favorites.</h3>
     {% endif %}
     </div>
+    
 </div>
 {% endblock %}

@@ -21,7 +21,7 @@ class Auction(models.Model):
         db_table = 'auction'
     
     def __str__(self):
-        return f' {type(self.auctionid)}'
+        return f' {self.auctionid}'
         # return f'{type(self.title)} {type(self.auctionid)}'
 
 class AuctionBid(models.Model):

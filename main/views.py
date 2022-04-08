@@ -40,11 +40,10 @@ def auction(request,pk):
     # Auction bids
     auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
     highest_bid = auction_item.floorprice 
-    # get boodle user ID 
+    
+    # who you are logged in as
     users = BoodleUser.objects.get(userid=3) 
     userid = users.userid 
-    # getting the user name
-    # user_profile = users.displayname
 
     if auction_bids:
         highest_bid = auction_bids[0].amount
@@ -72,14 +71,13 @@ def auction(request,pk):
         'item_floor_price': auction_item.floorprice,
         'highest_bid': highest_bid,
         'auction_end':  auction.auctionend,
-        'user_profile': users.displayname,
+        'user_profile': userid,
         'form' : form,
     }
 
     if auction.auctionend < datetime.now():
         return HttpResponse("This auction has already passed.")
     elif auction.auctionstart > datetime.now():
-        #return HttpResponse("This auction has not yet started.")
         return render(request, "boodlesite/templates/error404/notstarted_error404.html")
     else:
         return render(request, "boodlesite/templates/auction.html",context)    
@@ -176,6 +174,7 @@ def profile(request, pk):
             if bid.auctionid == auction:
                 idsOfAuction.append(bid.auctionid)
                 
+            
                 # print(auction.title)
                 # print(bid.auctionid)
                 # print("===============") #divider between auctions :3
@@ -187,6 +186,13 @@ def profile(request, pk):
     # for auction in auctionsOfUser:
     #     print(auction)   
 
+# for bid in bidsByUser:
+        #     for auction in auctionsOfUser:
+                # if bid.auctionid == auction:
+
+    for i in idsOfAuction:
+        print(i)
+        
     context = {
         'displayname': current_user.displayname,
         'username':current_user.username,

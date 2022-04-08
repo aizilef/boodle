@@ -25,6 +25,7 @@
 </div>
 
 <!--Change auctions_now, auction to like favorites, favorite-->
+<h2> Items {{displayname}} bid on </h2>
 <div class="event-container">
     {% if auctionsOfUser %}
     {% for id in idsOfAuction %} 
@@ -36,10 +37,10 @@
                 </a>
                 <p>{{ id.auctionend }}</p>
             </div> 
-            <input type="submit" value="remove auction">
-            
-            <!-- if button is clidked -->
-            <!-- id rmeove from ids of auctions -->
+            {% comment %} <form action="" method="POST">
+                {% csrf_token %}
+                <input type="submit" name="remove-auction" value="remove auction">
+            </form> {% endcomment %}
                 </div>
     {% endfor %}
     

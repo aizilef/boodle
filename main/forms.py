@@ -1,9 +1,17 @@
 from datetime import datetime
+from tracemalloc import start
 from django import forms
 from django.forms import (ModelForm, 
-    TextInput, Textarea, widgets)
+    TextInput, Textarea, widgets, MultiWidget)
 from django.utils.translation import gettext_lazy as _
 from .models import *
+
+from django.utils import timezone 
+import datetime, pytz
+
+from django.contrib.admin.widgets import AdminSplitDateTime
+from django.contrib.admin import widgets
+
 
 from django.core.exceptions import ValidationError
     
@@ -43,7 +51,17 @@ class AddItemForm(forms.ModelForm):
             'floorprice': _('Floor Price')
         }
 
+class DeleteItemForm(forms.Form):
+        itemid = forms.IntegerField()
+        widgets = {'itemid': forms.HiddenInput()}
+
 class StartAuctionForm(forms.ModelForm):
+
+    # the widget is supposed to have a pop up but not showing, keeping here bc it separates date and time nicely
+    auctionstart = forms.SplitDateTimeField(widget=AdminSplitDateTime())
+    auctionend = forms.SplitDateTimeField(widget=AdminSplitDateTime())
+
+
     class Meta:
         model = Auction
         fields = '__all__'
@@ -57,8 +75,27 @@ class StartAuctionForm(forms.ModelForm):
         }
 
         # datetime_format = ['%Y-%m-%d %H:%M']
-        # widgets = { 'auctionstart' : forms.DateTimeInput(input_formats=['%Y-%m-%d %H:%M']), 'auctionend' : forms.DateTimeInput(input_formats=['%Y-%m-%d %H:%M'])}
+        # widgets = { 'auctionstart' : forms.AdminSplitDateTime()} #, 'auctionend' : forms.SplitDateTimeField()}
         # vv fix later, is missing time widget
         # widgets = { 'auctionstart' : forms.SelectDateWidget, 'auctionend':forms.SelectDateWidget}
         # 'itemid': forms.HiddenInput()}
+
+    def clean(self):
         
+        super().clean()
+        end_time = self.cleaned_data['auctionend']
+        start_time = self.cleaned_data['auctionstart']
+        current_date = timezone.now()
+
+        auctioned_item = self.cleaned_data['itemid']
+            
+        auctions = Auction.objects.all()
+
+        if start_time > end_time:
+            raise ValidationError('Start date should be before end date.')
+        elif start_time < current_date or end_time < current_date:
+            raise ValidationError('Date cannot be in the past')
+        else:  
+            for auc in auctions:
+                if auc.itemid == auctioned_item:
+                    raise ValidationError('Auction Already Exists, pick another Item')

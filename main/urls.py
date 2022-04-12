@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 
+from django.views.i18n import JavaScriptCatalog
 
 urlpatterns = [
     path('', homepage, name='index'),
@@ -11,6 +12,8 @@ urlpatterns = [
     path('store/<int:pk>', mystore, name='storeid'),
     path('additem', addItem, name='additem'),
     path('additem/<int:pk>', addItem, name='additemid'),
+    path('edititem/<int:pk>', editItem, name='edititemid'),
+    path('jsi18n', JavaScriptCatalog.as_view(), name='js-catlog'),
     path('startauction', startAuction, name='startauction'),
     path('startauction/<int:pk>', startAuction, name='startauctionid'),
 

@@ -42,7 +42,48 @@
                 <h4>{{ item.itemname }}</h4>
                 <p>{{item.itemspecs}} <span class="item-price">PHP {{item.floorprice}}</span></p>
             </div>
-            <div class="item-btns"> <button>Auction</button> <button>Edit</button> <button>Delete</button>
+            <div class="item-btns"> <button>Auction</button> <button><a href="{% url 'edititemid' item.itemid %}">Edit</a></button> 
+                
+                <!-- <button>Delete</button> -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete_{{ item.itemid }}"
+                data-whatever="@mdo">Delete</button>
+        
+        
+                <div class="modal fade" id="delete_{{ item.itemid }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Item</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+            
+                        <div class="modal-body">
+                        <form action="" method="POST">
+                            <div class="form-group">
+                            <h3>Are you sure you want to delete {{item.itemname}}?</h3>
+                            {% csrf_token %}
+                            <!-- input is to get the itemid to POST for deletion -->
+                            <!-- {{form.itemid.value|default_if_none:item.itemid }}  -->
+                            <input name="itemid" type="hidden" value="{{item.itemid}}">
+                            </div>
+                        </div>
+            
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-secondary" name="Submit"> Confirm </button>
+                        </div>
+                        </form>
+            
+                    </div>
+                    </div>
+                </div>
+
+
+
             </div>
         </div>
         {% endfor %}
@@ -72,7 +113,6 @@
 
     <button type="button"><a href="{% url 'additemid' current_store.storeid %}">Add Item</a></button>
 </div>
-]
 </div>
 
 

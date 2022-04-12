@@ -94,12 +94,31 @@ def tempstore(request): # temp view
 def mystore(request, pk):
 
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
+    # pk is storeid
     current_store = Store.objects.get(pk=pk)
     store_items = Item.objects.filter(storeid=pk)
 
+    all_auctions = Auction.objects.all()
+
+    form = DeleteItemForm()
+
+    if request.method == "POST":
+        form = DeleteItemForm(request.POST)
+        if form.is_valid():
+            item_id = form.cleaned_data['itemid']
+            current_item = Item.objects.get(itemid=item_id)
+            for auction in all_auctions:
+                if auction.itemid == current_item:
+                    Auction.objects.filter(itemid=item_id).delete()
+                    
+            Item.objects.get(itemid=item_id).delete()
+
+            return redirect('storeid', pk=pk)
+
     context = {
         'current_store':current_store,
-        'store_items':store_items
+        'store_items':store_items,
+        'form':form
   
     }
 
@@ -125,27 +144,57 @@ def addItem(request, pk):
 
     return render(request, "boodlesite/templates/additem.html", context)
 
+def editItem(request, pk):
+
+    item = Item.objects.get(itemid=pk)
+    current_store = item.storeid.storeid
+    form = AddItemForm(instance=item)
+
+    if request.method == 'POST':
+        form = AddItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('storeid', pk=current_store)
+
+    context = {
+        'form':form,
+    }
+
+    return render(request, "boodlesite/templates/additem.html", context)
+
 def startAuction(request, pk):
 
     # pk is store id
     current_store = Store.objects.get(pk=pk)
+    store_id = current_store.storeid
     # get items under this store
     store_items = Item.objects.filter(storeid=pk)
 
-    form = StartAuctionForm(initial={'storeid':current_store})
+    # temp: all auctions
+    all_auctions = Auction.objects.all()
+
+    form = StartAuctionForm(initial={'auctionstart':datetime.now()})
 
     if request.method == 'POST':
-        form = StartAuctionForm(request.POST,initial={'storeid':current_store})
+        form = StartAuctionForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('storeid', pk=pk)
-
+            try:
+                title = form.cleaned_data['title']
+                info = form.cleaned_data['info']
+                starttime = form.cleaned_data['auctionstart']
+                endtime = form.cleaned_data['auctionend']
+                current_item = form.cleaned_data['itemid']
+                new_auction = Auction(title=title, info=info, auctionstart=starttime, auctionend=endtime, itemid=current_item)
+                new_auction.save()
+                return redirect(f"/startauction/{pk}")
+            except:
+                pass
 
     context = {
         'current_store':current_store,
         'store_items': store_items,
+        'all_auctions':all_auctions,
         'form':form
     }
-
 
     return render(request, "boodlesite/templates/startauction.html", context)

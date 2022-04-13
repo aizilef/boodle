@@ -54,8 +54,8 @@ def auction(request, pk):
                 new_bid = AuctionBid(amount=amount,bidtime=datetime.now(),auctionid=auction)
                 new_bid.save()
                 return redirect(f"/auction/{pk}")
-            except:
-                pass
+            except Exception as e:
+                print("Error:", e)
 
 
     context = {
@@ -64,6 +64,7 @@ def auction(request, pk):
         'auction_bids' : auction_bids,
         'item_floor_price': auction_item.floorprice,
         'highest_bid': highest_bid,
+        'auction_title': auction.title,
         'auction_end':  auction.auctionend,
         'form' : form,
     }
@@ -139,6 +140,7 @@ def addItem(request, pk):
 
     context = {
         'form':form,
+        'title': 'List new item',
         'current_store': current_store # access to store 1
     }
 
@@ -158,6 +160,7 @@ def editItem(request, pk):
 
     context = {
         'form':form,
+        'title': 'Edit item information'
     }
 
     return render(request, "boodlesite/templates/additem.html", context)

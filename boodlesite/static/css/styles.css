@@ -1,8 +1,13 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
   height: 100%;
+  font-family: Archivo;
   font-size: 11pt;
   color: #3d3838;
 }
@@ -19,12 +24,9 @@ nav {
   width: 100%;
   transition: all 0.5s;
   position: relative;
-  z-index: 1;
-}
-
-.fixed-nav nav {
-  position: fixed;
-  box-shadow 0 5px black;
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 16px;
 }
 
 nav ul {
@@ -32,6 +34,8 @@ nav ul {
   padding: 0;
   list-style: none;
   display: flex;
+  flex: 0 1 650px;
+  justify-content: space-evenly;
 }
 
 nav li {
@@ -65,43 +69,69 @@ nav a {
 
 /* nav bar end */
 
-.footer-basic {
+.footer {
   background-color: black;
   color: #f8edeb;
   display: flex;
   justify-content: center;
+  padding: 0rem 1rem;
 }
 
-.copyright {
+.footer .copyright {
   flex: 0 1 800px;
-  padding: 8px 24px;
+  padding: 1rem;
+}
+
+/* carousel */
+.carousel-item {
+  position: relative !important;
+}
+.carousel-content {
+  position: absolute;
+  top: 40%;
+  left: 60%;
+  transform: translate(0%, -20%);
+  z-index: 20;
+  color: black;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+#btn-shop-now{
+  border-radius: 5%;
+  background-color:white;
+  padding: 0.5rem 1rem;
 }
 
 /* homepage about section */
-.about-image {
-  display: flex;
-  height: 300px;
-  width: 200px;
-  padding: 40px 1px 40px 40px;
-  /*top right bottom left*/
+
+@media(max-width:768px) {
+
+  .about-right {padding: 2rem 4rem; text-align:center;}
 }
 
-.about-text {
-  display: flex;
-  padding: 40px 0px 40px 100px;
+.container-about {padding:2rem;}
+.about-left {
+  display:flex; justify-content: center;
+}
+.about-left img {width:420px; height:420px; object-fit: cover; border-radius: 50%;}
+.about-right {display:flex; align-items: center;  padding: 2rem 4rem;
 }
 
-.text {
-  justify-content: flex-end;
-  text-align: right;
-  font-size: 20px;
+
+.about-text {background-color: #f0f0f0; box-shadow:1rem 1rem #333fcd; padding:1rem 2rem;}
+.about-text p { font-size: 18px; }
+
+#btn-read-more {
+  border-radius: 5%;
+  background-color:rgb(255, 255, 255);
+  padding:1rem;
 }
 
 /* homepage happening now */
 
-.title-container {
+.header-container {
   display: flex;
-  padding: 8px 32px;
+  padding: 1rem;
   justify-content: center;
 }
 
@@ -117,13 +147,9 @@ nav a {
 }
 
 .event-container {
-  margin: 50px;
+  margin: 0rem 2.5rem 2.5rem 2.5rem;
   display: flex;
   justify-content: center;
-  background-color: #ffc2c2;
-  padding: 8px;
-  border: 2px dotted black;
-  margin: 32px;
 }
 
 .event {
@@ -134,13 +160,19 @@ nav a {
 
 .event img {
   max-width: 100%;
+  height: 240px;
   object-fit: cover;
 }
 
 .event-text {
   padding: 16px;
   text-align: center;
+  display:flex;
+  flex-direction:column;
+  justify-content: space-evenly;
 }
+
+.event-text h4 { color:black; font-size: 20px;}
 
 .slick-prev:before {
   color: black !important;
@@ -189,8 +221,26 @@ nav a {
 
 /* auction view */
 
+.auction-left, .auction-right{
+  padding: 2rem 1rem;
+}
+
+
+.bid-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0px;
+}
+
+#bid-amount {display:inline-block; }
+
 .product-info {
-  padding: 8px 16px;
+  padding: 8px 16px 8px 0;
+  border: 2px dotted black;
+}
+
+.form-group.placebid {
+  text-align:center;
 }
 
 /* auction view end */
@@ -277,7 +327,7 @@ nav a {
 
 }
 
-@media(max-width:600px) {
+@media(max-width:768px) {
   .store-item-container {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -294,6 +344,7 @@ nav a {
 
   background-color: skyblue;
   border: 2px dotted black;
+
 }
 
 .store-item img {
@@ -303,8 +354,12 @@ nav a {
 
 .item-info {
   padding: 1rem 1rem 0 1rem;
+  text-align: center;
 
 }
+
+#item-name { color: black; font-size: 12pt; }
+#item-price {color:black;}
 
 .item-btns {
   display: flex;

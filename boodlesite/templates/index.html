@@ -10,17 +10,38 @@
 {% block content %}
 
 <!-- banner  -->
-<div id="container-fluid">
+<div id="container-fluid banner">
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="d-block w-100" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80" alt="First slide">
+                <img class="d-block w-100"
+                    src="https://media.istockphoto.com/photos/face-cream-serum-lotion-moisturizer-and-sea-salt-among-bamboo-leaves-picture-id1136422297?k=20&m=1136422297&s=612x612&w=0&h=fk-Du8-BxBYn4rtint_HULFN5FpUWNeaBQye9DoSzpc="
+                    alt="First slide">
+                    <div class="carousel-content">
+                        <h1>Welcome to Boodle.</h1>
+                        <p>Your ultimate online auctioning platform.</p>
+                        <button id="btn-shop-now" onclick="scrollDown()">Shop now</button>
+                    </div>
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80" alt="Second slide">
+                <img class="d-block w-100"
+                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80"
+                    alt="Second slide">
+                    <div class="carousel-content">
+                        <h1>Slide 2.</h1>
+                        <p>Lorem ipsum</p>
+                        <button onclick="scrollDown()">Shop now</button>
+                    </div>
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80" alt="Third slide">
+                <img class="d-block w-100"
+                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80"
+                    alt="Third slide">
+                    <div class="carousel-content">
+                        <h1>Slide 3.</h1>
+                        <p>Lorem ipsum</p>   
+                        <button onclick="scrollDown()">Shop now</button>
+                    </div>
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -34,21 +55,28 @@
     </div>
 </div>
 
-<div class="title-container"><h1> About Us </h1></div>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-8">
-            <div class="about-text">
-                <p class="text">Boodle was founded by 4 amaing talented software engineers, who are college studyents based in Metro Manila who go to Ateneo de Manila University. They believe they can change status quo of the ecommerce world. And they did. </p>
-            </div>
+
+<div class="container-fluid about">
+    <div class="row container-about">
+        <div class="col-lg-5 col-md-6 about-left">
+            <img src="https://media.istockphoto.com/vectors/mobile-shopping-vector-id1152401093?b=1&k=20&m=1152401093&s=612x612&w=0&h=rE_UnLvBcOmq32s4mX0mZSaidfeGkgLOe5EiI7DbJ4Q=">
         </div>
-        <div class="col about-image">
-            <img src="../static/media/dancinginthekitchen.jpg">
+        <div class="col-lg-7 col-md-6 about-right">
+            <div class="about-text">
+                <h1> About Us </h1>
+
+                <p>Boodle was founded by a group of four talented software engineers, who are currently Computer Science students
+                    in Ateneo de Manila University. They believed they could change the status quo
+                    of the e-commerce world—and with Boodle, they did. </p>
+                <button id="btn-read-more">Read more</button>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="title-container"><h1> Happening Now </h1></div>
+<div class="header-container">
+    <h1> Happening Right Now </h1>
+</div>
 
 <div class="event-container">
     {% if auctions_now %}
@@ -59,20 +87,23 @@
 
         <div class="event-text">
             <a href="{% url 'auctionid' auction.auctionid %}">
-                <h3>{{ auction.title }}</h3>
+                <h4>{{ auction.title }}</h4>
             </a>
             <p>{{ auction.info }}</p>
+            <p><i>Ends on {{auction.auctionend}}</i></p>
         </div>
     </div>
     {% endfor %}
     {% else %}
-    <h3> no auctions happening yet.</h3>
+    <p> No auctions currently happening.</p>
     {% endif %}
 
 </div>
 </div>
 
-<div class="title-container"><h1> Upcoming Events </h1></div>
+<div class="header-container">
+    <h1> Upcoming Events </h1>
+</div>
 
 <div class="event-container">
     {% if auctions_soon %}
@@ -90,54 +121,61 @@
     </div>
     {% endfor %}
     {% else %}
-    <h3> no auctions happening soon.</h3>
+    <p> No auctions happening soon.</p>
     {% endif %}
 
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('.event-container').slick({
-  dots: true,
-  infinite: false,
-  speed: 300,
-  slidesToShow: 4,
-  slidesToScroll: 4,
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        arrows: true,
-        slidesToShow: 3,
-        slidesToScroll: 3,
-        infinite: true,
-        dots: true
-      }
-    },
-    {
-      breakpoint: 600,
-      settings: {
-        arrows: true,
+            dots: true,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        arrows: true,
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        arrows: true,
 
-        slidesToShow: 2,
-        slidesToScroll: 2
-      }
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        arrows: true,
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        arrows: true,
 
-        slidesToShow: 1,
-        slidesToScroll: 1
-      }
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+                // You can unslick at a given breakpoint now by adding:
+                // settings: "unslick"
+                // instead of a settings object
+            ]
+        });
+    });
+
+    function scrollDown() {
+    const element = document.getElementsByClassName("header-container");
+    element[0].scrollIntoView();
+    console.log('scroll')
     }
-    // You can unslick at a given breakpoint now by adding:
-    // settings: "unslick"
-    // instead of a settings object
-  ]
-});
-});
+
 </script>
 
 {% endblock %}

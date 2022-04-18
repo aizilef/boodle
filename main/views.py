@@ -41,8 +41,8 @@ def auction(request,pk):
     auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
     highest_bid = auction_item.floorprice 
     
-    # who you are logged in as
-    users = BoodleUser.objects.get(userid=3) 
+    ## ⭐ the user that is logged in
+    users = BoodleUser.objects.get(userid=1) 
     userid = users.userid 
 
     if auction_bids:
@@ -210,8 +210,8 @@ def startAuction(request, pk):
 def tempProfile(request): # temp view
 
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
-    user_one =BoodleUser.objects.get(userid=1)
-    user_two = BoodleUser.objects.get(userid=3)
+    user_one =BoodleUser.objects.get(userid=1) # shrek
+    user_two = BoodleUser.objects.get(userid=3) ## tony
 
     context = {
         'user_one':user_one, #### used for navbar, access to user1
@@ -224,7 +224,8 @@ def profile(request, pk):
     
     current_user = BoodleUser.objects.get(pk=pk)
     #auction bid user id = 3 --> bids user made --> know auctions g
-    bidsByUser = AuctionBid.objects.filter(boodleuserid=3).distinct('auctionid')
+    ## ⭐ the user that is logged in
+    bidsByUser = AuctionBid.objects.filter(boodleuserid=1).distinct('auctionid')
 
     auctionsOfUser = Auction.objects.all().distinct('auctionid')
     # for auction in auctionsOfUser:

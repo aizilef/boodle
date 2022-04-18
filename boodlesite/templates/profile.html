@@ -1,0 +1,53 @@
+{% extends 'boodlesite\templates\base.html' %}
+{% load static %}
+
+
+{% block title %}Profile{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="username-section displayname profile-element">
+        <h2>This is {{ displayname }}'s profile</h2>
+    </div>
+    <div class-"user-img userimage profile-element">
+        <img src="https://minimaltoolkit.com/images/randomdata/female/64.jpg" alt="profile-image">
+    </div>
+    <div class "username profile-element">
+        <h4> {{ username }} </h4>
+    </div>
+    <div class="btn-group profile-element" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary">My Store</button>
+        <button type="button" class="btn btn-primary">Edit Profile</button>
+    </div>
+</div>
+
+<!--Change auctions_now, auction to like favorites, favorite-->
+<h2> Items {{displayname}} bid on </h2>
+<div class="event-container">
+    {% if auctionsOfUser %}
+    {% for id in idsOfAuction %} 
+        <div class="event">
+            <img src="http://via.placeholder.com/640x360" alt="">
+            <div class="event-text">
+                <a href="{% url 'auctionid'  id.auctionid %}">
+                    <h3>{{ id.title }}</h3>
+                </a>
+                <p>{{ id.auctionend }}</p>
+            </div> 
+            {% comment %} <form action="" method="POST">
+                {% csrf_token %}
+                <input type="submit" name="remove-auction" value="remove auction">
+            </form> {% endcomment %}
+                </div>
+    {% endfor %}
+    
+    {% else %}
+        <h3> No Favorites.</h3>
+    {% endif %}
+    </div>
+    
+</div>
+{% endblock %}

@@ -21,7 +21,7 @@ def homepage(request):
     # Filter by auctions scheduled at most a week from now
     week_range = datetime.now() + timedelta(days=7)
     auctions_soon = Auction.objects.filter(auctionstart__lt=week_range).exclude(auctionstart__lte=datetime.now())
-    for auction in auctions_soon:  #
+    for auction in auctions_soon:
         print(auction)    
 
     context = {
@@ -31,32 +31,38 @@ def homepage(request):
 
     return render(request, "boodlesite/templates/index.html",context)    
 
-def auction(request, pk):
+def auction(request,pk):
 
     # Current auction ID
     auction = Auction.objects.get(pk=pk)
     # Item for auction
-    auction_item = auction.itemid
+    auction_item = auction.itemid # this is the itemfk thru auction
     # Auction bids
     auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
-
-    highest_bid = auction_item.floorprice
+    highest_bid = auction_item.floorprice 
+    
+    # who you are logged in as
+    users = BoodleUser.objects.get(userid=3) 
+    userid = users.userid 
 
     if auction_bids:
         highest_bid = auction_bids[0].amount
 
-    form = PlaceBidForm(initial={'auctionid':auction})
+    # PLACE BID FORM AND ADD TO FAVES FORM
+    form = PlaceBidForm(initial={'auctionid':auction, 'boodleuserid':users})
     if request.method == 'POST':
-        form = PlaceBidForm(request.POST,initial={'auctionid':auction})
+        form = PlaceBidForm(request.POST,initial={'auctionid':auction, 'boodleuserid':users})
         if form.is_valid():
             try:
                 amount = form.cleaned_data['amount']
-                new_bid = AuctionBid(amount=amount,bidtime=datetime.now(),auctionid=auction)
+                # saves the bid by auctionid, amount, bidtime, boodleuserid
+                new_bid = AuctionBid(
+                    amount=amount, bidtime=datetime.now(),
+                    auctionid=auction, boodleuserid=users)
                 new_bid.save()
                 return redirect(f"/auction/{pk}")
             except Exception as e:
                 print("Error:", e)
-
 
     context = {
         'item_name':auction_item.itemname,
@@ -66,13 +72,13 @@ def auction(request, pk):
         'highest_bid': highest_bid,
         'auction_title': auction.title,
         'auction_end':  auction.auctionend,
+        'user_profile': userid,
         'form' : form,
     }
 
     if auction.auctionend < datetime.now():
         return HttpResponse("This auction has already passed.")
     elif auction.auctionstart > datetime.now():
-        #return HttpResponse("This auction has not yet started.")
         return render(request, "boodlesite/templates/error404/notstarted_error404.html")
     else:
         return render(request, "boodlesite/templates/auction.html",context)    
@@ -87,7 +93,6 @@ def tempstore(request): # temp view
 
     context = {
         'current_store':current_store #### used for navbar, access to store 1
-
     }
 
     return render(request, "boodlesite/templates/tempstore.html", context)
@@ -201,3 +206,66 @@ def startAuction(request, pk):
     }
 
     return render(request, "boodlesite/templates/startauction.html", context)
+
+def tempProfile(request): # temp view
+
+    #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
+    user_one =BoodleUser.objects.get(userid=1)
+    user_two = BoodleUser.objects.get(userid=3)
+
+    context = {
+        'user_one':user_one, #### used for navbar, access to user1
+        'user_two':user_two, #### used for navbar, access to user1
+    }
+
+    return render(request, "boodlesite/templates/tempprofile.html", context)
+
+def profile(request, pk):
+    
+    current_user = BoodleUser.objects.get(pk=pk)
+    #auction bid user id = 3 --> bids user made --> know auctions g
+    bidsByUser = AuctionBid.objects.filter(boodleuserid=3).distinct('auctionid')
+
+    auctionsOfUser = Auction.objects.all().distinct('auctionid')
+    # for auction in auctionsOfUser:
+    #     print(auction)   
+    #     print(auction.title)
+    #     print(auction.auctionid)
+    
+    #Is of auctions (FK) in AuctionBid objects
+    idsOfAuction = []
+
+    for bid in bidsByUser:
+        for auction in auctionsOfUser:
+            if bid.auctionid == auction:
+                idsOfAuction.append(bid.auctionid)
+                
+            
+                # print(auction.title)
+                # print(bid.auctionid)
+                # print("===============") #divider between auctions :3
+    print("These are the distinct auction IDs: ", idsOfAuction)
+
+    #💫auctionsOfUser = Auction.objects.all().distinct('auctionid')
+    # get existing auctions for user's bids
+    auctions = Auction.objects.all()
+    # for auction in auctionsOfUser:
+    #     print(auction)   
+
+# for bid in bidsByUser:
+        #     for auction in auctionsOfUser:
+                # if bid.auctionid == auction:
+
+    for i in idsOfAuction:
+        print(i)
+        
+    context = {
+        'displayname': current_user.displayname,
+        'username':current_user.username,
+        'bidsByUser' : bidsByUser,
+        'auctionsOfUser': auctionsOfUser,
+        'auctions': auctions,
+        'idsOfAuction': idsOfAuction,
+    }
+
+    return render(request, "boodlesite/templates/profile.html", context)

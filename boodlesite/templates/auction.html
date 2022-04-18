@@ -76,7 +76,7 @@
         {% if auction_bids %}
         {% for bid in auction_bids %}
         <li><img src="" alt="">
-          <p>User offered <span id="bid-amount">₱{{ bid.amount }}</span></p>
+          <p>{{bid.boodleuserid.displayname}} offered {{ bid.amount }}</p>
           <p> &nbsp | &nbsp </p>
           <p>{{bid.bidtime | timesince}} ago </p>
 

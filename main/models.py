@@ -19,20 +19,24 @@ class Auction(models.Model):
     class Meta:
         managed = False
         db_table = 'auction'
-
+    
+    def __str__(self):
+        return f' {self.auctionid}'
+        # return f'{type(self.title)} {type(self.auctionid)}'
 
 class AuctionBid(models.Model):
     bidno = models.AutoField(primary_key=True)
     amount = models.DecimalField(max_digits=15, decimal_places=4)
     bidtime = models.DateTimeField(blank=True, null=True)
     auctionid = models.ForeignKey(Auction, models.DO_NOTHING, db_column='auctionid')
+    boodleuserid = models.ForeignKey('BoodleUser', models.DO_NOTHING, db_column='boodleuserid')
 
     class Meta:
         managed = False
         db_table = 'auctionbid'
-    
-    def __str__(self):
-        return '%d' % (self.amount)
+
+    # def __str__(self):
+    #     return self.boodleuserid
 
 
 class AuthGroup(models.Model):
@@ -99,6 +103,17 @@ class AuthUserUserPermissions(models.Model):
         managed = False
         db_table = 'auth_user_user_permissions'
         unique_together = (('user', 'permission'),)
+
+
+class BoodleUser(models.Model):
+    userid = models.AutoField(primary_key=True)
+    displayname = models.CharField(max_length=255)
+    pword = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'boodleuser'
 
 
 class DjangoAdminLog(models.Model):

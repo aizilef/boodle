@@ -18,8 +18,10 @@ from django.core.exceptions import ValidationError
 class PlaceBidForm(forms.ModelForm):
     class Meta:
         model = AuctionBid
-        fields = ['amount','auctionid']
-        widgets = {'auctionid': forms.HiddenInput()}
+        fields = ['amount', 'boodleuserid', 'auctionid']
+        widgets = {'auctionid': forms.HiddenInput(), 
+            'boodleuserid': forms.HiddenInput()
+        }
 
     def clean(self):
         super().clean()
@@ -27,7 +29,6 @@ class PlaceBidForm(forms.ModelForm):
         auction = self.cleaned_data.get('auctionid')
 
         auction_item = Item.objects.get(auction=auction)
-
         auction_bids = AuctionBid.objects.filter(auctionid=auction)
         
         if not auction_bids:

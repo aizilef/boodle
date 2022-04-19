@@ -177,6 +177,9 @@ def startAuction(request, pk):
     store_id = current_store.storeid
     # get items under this store
     store_items = Item.objects.filter(storeid=pk)
+    # Current userid, change as per ⭐ whoever is logged in
+    user = BoodleUser.objects.get(userid=1)
+    userid = user.userid
 
     # temp: all auctions
     all_auctions = Auction.objects.all()
@@ -194,7 +197,7 @@ def startAuction(request, pk):
                 current_item = form.cleaned_data['itemid']
                 new_auction = Auction(title=title, info=info, auctionstart=starttime, auctionend=endtime, itemid=current_item)
                 new_auction.save()
-                return redirect(f"/startauction/{pk}")
+                return redirect(f"/profile/{userid}")
             except:
                 pass
 

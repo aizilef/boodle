@@ -100,3 +100,13 @@ class StartAuctionForm(forms.ModelForm):
             for auc in auctions:
                 if auc.itemid == auctioned_item:
                     raise ValidationError('Auction Already Exists, pick another Item')
+
+class CreateStoreForm(forms.ModelForm):
+    class Meta:
+        model = Store
+        fields = ['storename', 'storedesc']
+
+        labels = {
+            'storename': _('Store Name'),
+            'storedesc': _('Store Description')
+        }

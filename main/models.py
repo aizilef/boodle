@@ -24,12 +24,13 @@ class Auction(models.Model):
         return f' {self.auctionid}'
         # return f'{type(self.title)} {type(self.auctionid)}'
 
+
 class AuctionBid(models.Model):
     bidno = models.AutoField(primary_key=True)
     amount = models.DecimalField(max_digits=15, decimal_places=4)
     bidtime = models.DateTimeField(blank=True, null=True)
     auctionid = models.ForeignKey(Auction, models.DO_NOTHING, db_column='auctionid')
-    boodleuserid = models.ForeignKey('BoodleUser', models.DO_NOTHING, db_column='boodleuserid')
+    boodleuserid = models.ForeignKey('Boodleuser', models.DO_NOTHING, db_column='boodleuserid')
 
     class Meta:
         managed = False
@@ -110,6 +111,7 @@ class BoodleUser(models.Model):
     displayname = models.CharField(max_length=255)
     pword = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
+    storeid = models.ForeignKey('Store', models.DO_NOTHING, db_column='storeid', blank=True, null=True)
 
     class Meta:
         managed = False

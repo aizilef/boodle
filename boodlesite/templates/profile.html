@@ -19,7 +19,17 @@
         <h4> {{ username }} </h4>
     </div>
     <div class="btn-group profile-element" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary">My Store</button>
+        {% if storename %}
+            <button type="button" class="btn btn-primary">
+                <a href= "{% url 'storeid' storename.storeid %}" >
+                My Store 
+                </a>
+            </button>
+        {% else %}    
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createStoreModal"
+        data-whatever="@mdo">Create Store</button>
+        {% endif %}    
+
         <button type="button" class="btn btn-primary">Edit Profile</button>
     </div>
 </div>
@@ -48,6 +58,37 @@
         <h3> No Favorites.</h3>
     {% endif %}
     </div>
-    
+
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="createStoreModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create {{displayname}}'s Store</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+
+        <div class="modal-body">
+        <form action="" method="POST">
+            <div class="form-group createstore">
+                <h5>Current Highest Bid: </h5>
+                <h3>PHP {{highest_bid}}</h3>
+                {% csrf_token %}
+                {{ form }}
+            </div>
+        </div>
+
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-secondary" name="Submit"> Submit </button>
+        </div>
+        </form>
+
+    </div>
+    </div>
 </div>
 {% endblock %}

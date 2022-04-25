@@ -42,7 +42,7 @@ def auction(request,pk):
     highest_bid = auction_item.floorprice 
     
     ## ⭐ the user that is logged in
-    users = BoodleUser.objects.get(userid=1) 
+    users = BoodleUser.objects.get(userid=3) 
     userid = users.userid 
 
     if auction_bids:
@@ -225,15 +225,9 @@ def profile(request, pk):
     current_user = BoodleUser.objects.get(pk=pk)
     #auction bid user id = 3 --> bids user made --> know auctions g
     ## ⭐ the user that is logged in
-    bidsByUser = AuctionBid.objects.filter(boodleuserid=1).distinct('auctionid')
+    bidsByUser = AuctionBid.objects.filter(boodleuserid=3).distinct('auctionid')
 
     auctionsOfUser = Auction.objects.all().distinct('auctionid')
-    # for auction in auctionsOfUser:
-    #     print(auction)   
-    #     print(auction.title)
-    #     print(auction.auctionid)
-    
-    #Is of auctions (FK) in AuctionBid objects
     idsOfAuction = []
 
     for bid in bidsByUser:
@@ -241,32 +235,32 @@ def profile(request, pk):
             if bid.auctionid == auction:
                 idsOfAuction.append(bid.auctionid)
                 
-            
-                # print(auction.title)
-                # print(bid.auctionid)
-                # print("===============") #divider between auctions :3
-    print("These are the distinct auction IDs: ", idsOfAuction)
+    # print("These are the distinct auction IDs: ", idsOfAuction)
 
     #💫auctionsOfUser = Auction.objects.all().distinct('auctionid')
     # get existing auctions for user's bids
     auctions = Auction.objects.all()
-    # for auction in auctionsOfUser:
-    #     print(auction)   
 
-# for bid in bidsByUser:
-        #     for auction in auctionsOfUser:
-                # if bid.auctionid == auction:
+    # 🔥Current Store, pk here is the storeid
+    current_user = BoodleUser.objects.get(pk=pk)
+    form = CreateStoreForm()
 
-    for i in idsOfAuction:
-        print(i)
-        
+    if request.method == 'POST':
+        form = CreateStoreForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('userid', pk=pk)
+    # 🔥 
+
     context = {
         'displayname': current_user.displayname,
         'username':current_user.username,
+        'storename':current_user.storeid,
         'bidsByUser' : bidsByUser,
         'auctionsOfUser': auctionsOfUser,
         'auctions': auctions,
         'idsOfAuction': idsOfAuction,
+        'createStoreForm': form,
     }
 
     return render(request, "boodlesite/templates/profile.html", context)

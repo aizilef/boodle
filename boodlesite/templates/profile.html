@@ -75,10 +75,8 @@
         <div class="modal-body">
         <form action="" method="POST">
             <div class="form-group createstore">
-                <h5>Current Highest Bid: </h5>
-                <h3>PHP {{highest_bid}}</h3>
                 {% csrf_token %}
-                {{ form }}
+                {{ createStoreForm.as_p }}
             </div>
         </div>
 

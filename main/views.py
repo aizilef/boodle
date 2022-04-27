@@ -263,7 +263,7 @@ def profile(request, pk):
         'auctionsOfUser': auctionsOfUser,
         'auctions': auctions,
         'idsOfAuction': idsOfAuction,
-        'createStoreForm': form,
+        'createStoreForm': form
     }
 
     return render(request, "boodlesite/templates/profile.html", context)

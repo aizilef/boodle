@@ -104,7 +104,8 @@ class StartAuctionForm(forms.ModelForm):
 class CreateStoreForm(forms.ModelForm):
     class Meta:
         model = Store
-        fields = ['storename', 'storedesc']
+        fields = ['storename', 'storedesc', 'userid']
+        widgets = {'userid': forms.HiddenInput()}
 
         labels = {
             'storename': _('Store Name'),

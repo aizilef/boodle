@@ -125,7 +125,6 @@ def mystore(request, pk):
         'current_store':current_store,
         'store_items':store_items,
         'form':form
-  
     }
 
     return render(request, "boodlesite/templates/store.html", context)
@@ -154,7 +153,7 @@ def addItem(request, pk):
 def editItem(request, pk):
 
     item = Item.objects.get(itemid=pk)
-    current_store = item.storeid.storeid
+    current_store = item.storeid
     form = AddItemForm(instance=item)
 
     if request.method == 'POST':
@@ -178,7 +177,7 @@ def startAuction(request, pk):
     # get items under this store
     store_items = Item.objects.filter(storeid=pk)
     # Current userid, change as per ⭐ whoever is logged in
-    user = BoodleUser.objects.get(userid=1)
+    user = BoodleUser.objects.get(userid=3)
     userid = user.userid
 
     # temp: all auctions
@@ -246,19 +245,35 @@ def profile(request, pk):
 
     # 🔥Current Store, pk here is the storeid
     current_user = BoodleUser.objects.get(pk=pk)
-    form = CreateStoreForm()
+    form = CreateStoreForm(initial={'userid':pk})
+
+    current_store = Store.objects.filter(userid=current_user.userid)
+    current_storeid = None
+
+    for i in current_store:
+        current_storeid = i
 
     if request.method == 'POST':
-        form = CreateStoreForm(request.POST)
+        form = CreateStoreForm(request.POST, initial={'userid':pk}) 
+        # putting a default value
         if form.is_valid():
             form.save()
-            return redirect('userid', pk=pk)
+            return redirect('profileid', pk=pk)
     # 🔥 
+
+    # checks if userid exists in store
+    # if current_user.userid in Store.objects.get():
+    #     if current_user:
+    #         current_store = Store.objects.filter(userid=pk)
+    #         # current_store = Store.objects.get(pk=pk)  
+    #         # if the current store exists, it will be the pk the 
+    #     else:
+    #         current_store.storeid = None # if current store doesnt exist (no user)
 
     context = {
         'displayname': current_user.displayname,
-        'username':current_user.username,
-        'storename':current_user.storeid,
+        'username': current_user.username,
+        'store': current_storeid,
         'bidsByUser' : bidsByUser,
         'auctionsOfUser': auctionsOfUser,
         'auctions': auctions,
@@ -267,3 +282,22 @@ def profile(request, pk):
     }
 
     return render(request, "boodlesite/templates/profile.html", context)
+
+def editStore(request, pk):
+
+    store= Store.objects.get(storeid=pk)
+    current_store = store.storeid
+    form = CreateStoreForm(instance=store)
+
+    if request.method == 'POST':
+        form = CreateStoreForm(request.POST, instance=store)
+        if form.is_valid():
+            form.save()
+            return redirect('storeid', pk=current_store)
+
+    context = {
+        'form': form,
+        'title': 'Edit Store Information'
+    }
+
+    return render(request, "boodlesite/templates/storeForm.html", context)

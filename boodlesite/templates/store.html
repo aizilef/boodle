@@ -9,13 +9,17 @@
 
 {% block content %}
 
+
 <div class="store-container">
     <div class="store-banner"><img src="https://www.w3schools.com/howto/img_snow_wide.jpg">
         <div class="store-info">
             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
             <h1>{{ current_store.storename }}</h1>
             <p>@username</p>
-            <button class="edit-shop-btn" type="button">Edit Shop Info</button>
+            <!-- EDIT STORE STUFF -->
+            <button class="edit-shop-btn" type="button">
+                <a href="{% url 'editstoreid' current_store.storeid %}">Edit Store Info</a>
+            </button>
         </div>
     </div>
 

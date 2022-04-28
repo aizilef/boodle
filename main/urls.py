@@ -19,4 +19,5 @@ urlpatterns = [
     # this is tempuser profile
     path('profile', tempProfile, name='profile'),
     path('profile/<int:pk>', profile, name='profileid'),
+    path('editstore/<int:pk>', editStore, name='editstoreid'),
 ]

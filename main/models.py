@@ -19,10 +19,6 @@ class Auction(models.Model):
     class Meta:
         managed = False
         db_table = 'auction'
-    
-    def __str__(self):
-        return f' {self.auctionid}'
-        # return f'{type(self.title)} {type(self.auctionid)}'
 
 
 class AuctionBid(models.Model):
@@ -30,14 +26,11 @@ class AuctionBid(models.Model):
     amount = models.DecimalField(max_digits=15, decimal_places=4)
     bidtime = models.DateTimeField(blank=True, null=True)
     auctionid = models.ForeignKey(Auction, models.DO_NOTHING, db_column='auctionid')
-    boodleuserid = models.ForeignKey('Boodleuser', models.DO_NOTHING, db_column='boodleuserid')
+    boodleuserid = models.ForeignKey('BoodleUser', models.DO_NOTHING, db_column='boodleuserid')
 
     class Meta:
         managed = False
         db_table = 'auctionbid'
-
-    # def __str__(self):
-    #     return self.boodleuserid
 
 
 class AuthGroup(models.Model):
@@ -111,7 +104,6 @@ class BoodleUser(models.Model):
     displayname = models.CharField(max_length=255)
     pword = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
-    storeid = models.ForeignKey('Store', models.DO_NOTHING, db_column='storeid', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -173,16 +165,21 @@ class Item(models.Model):
     class Meta:
         managed = False
         db_table = 'item'
-
+    
     def __str__(self):
         return '%s' % (self.itemname)
+
 
 
 class Store(models.Model):
     storeid = models.AutoField(primary_key=True)
     storename = models.CharField(max_length=255)
     storedesc = models.CharField(max_length=700)
+    userid = models.ForeignKey(BoodleUser, models.DO_NOTHING, db_column='userid', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'store'
+
+    def __str__(self):
+        return '%s' % (self.storeid)

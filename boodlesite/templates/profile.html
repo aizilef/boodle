@@ -19,15 +19,17 @@
         <h4> {{ username }} </h4>
     </div>
     <div class="btn-group profile-element" role="group" aria-label="Basic example">
-        {% if storename %}
+        <!--If a user owns a store, they can access the store-->
+        {% if store %}
             <button type="button" class="btn btn-primary">
-                <a href= "{% url 'storeid' storename.storeid %}" >
-                My Store 
+                <a href= "{% url 'storeid' store %}" >
+                    My Store 
                 </a>
             </button>
+        <!--If a user does not own a store, they can create a store-->
         {% else %}    
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createStoreModal"
-        data-whatever="@mdo">Create Store</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createStoreModal"
+            data-whatever="@mdo">Create Store</button>
         {% endif %}    
 
         <button type="button" class="btn btn-primary">Edit Profile</button>
@@ -47,10 +49,6 @@
                 </a>
                 <p>{{ id.auctionend }}</p>
             </div> 
-            {% comment %} <form action="" method="POST">
-                {% csrf_token %}
-                <input type="submit" name="remove-auction" value="remove auction">
-            </form> {% endcomment %}
                 </div>
     {% endfor %}
     

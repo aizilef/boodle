@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 
 from django.core.exceptions import ValidationError
+from django.utils import timezone 
 
 from .models import *
 from .forms import *
@@ -243,6 +244,31 @@ def profile(request, pk):
     # get existing auctions for user's bids
     auctions = Auction.objects.all()
 
+    ### Purchase History ###
+
+    # Get auctionstart < currentdate auctions
+    current_date = datetime.now()
+    won_itemids = []
+    won_auctions = []
+
+    for aucid in idsOfAuction:
+
+        tempAuction = Auction.objects.get(pk=aucid.auctionid)
+        auctionend = tempAuction.auctionend
+
+        # finished auction, auctionend
+        if auctionend < current_date:
+            
+            bids = AuctionBid.objects.filter(auctionid=aucid).order_by('-bidtime')
+            highest_bidder = bids[0].boodleuserid
+
+            if highest_bidder.userid == current_user.userid:
+                itemid = aucid.itemid
+                itemid.sellprice = bids[0].amount
+                won_auctions.append(aucid)
+                won_itemids.append(itemid)
+
+
     # 🔥Current Store, pk here is the storeid
     current_user = BoodleUser.objects.get(pk=pk)
     form = CreateStoreForm(initial={'userid':pk})
@@ -261,14 +287,6 @@ def profile(request, pk):
             return redirect('profileid', pk=pk)
     # 🔥 
 
-    # checks if userid exists in store
-    # if current_user.userid in Store.objects.get():
-    #     if current_user:
-    #         current_store = Store.objects.filter(userid=pk)
-    #         # current_store = Store.objects.get(pk=pk)  
-    #         # if the current store exists, it will be the pk the 
-    #     else:
-    #         current_store.storeid = None # if current store doesnt exist (no user)
 
     context = {
         'displayname': current_user.displayname,
@@ -279,6 +297,9 @@ def profile(request, pk):
         'auctionsOfUser': auctionsOfUser,
         'auctions': auctions,
         'idsOfAuction': idsOfAuction,
+        'won_items': won_itemids,
+        'won_auctions':won_auctions,
+        'currentdate':current_date,
         'createStoreForm': form
     }
 

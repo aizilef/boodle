@@ -273,6 +273,7 @@ def profile(request, pk):
     context = {
         'displayname': current_user.displayname,
         'username': current_user.username,
+        'user': current_user.userid,
         'store': current_storeid,
         'bidsByUser' : bidsByUser,
         'auctionsOfUser': auctionsOfUser,
@@ -301,3 +302,22 @@ def editStore(request, pk):
     }
 
     return render(request, "boodlesite/templates/storeForm.html", context)
+
+def editProfile(request, pk):
+
+    user= BoodleUser.objects.get(userid=pk) # boodleuser object
+    current_user = user.userid #boodle user id
+    form = editBoodleUserForm(instance=user)
+
+    if request.method == 'POST':
+        form = editBoodleUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profileid', pk=current_user)
+
+    context = {
+        'form': form,
+        'title': 'Edit Profile Information',
+    }
+
+    return render(request, "boodlesite/templates/editBoodleUser.html", context)

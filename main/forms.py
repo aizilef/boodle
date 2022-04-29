@@ -111,3 +111,15 @@ class CreateStoreForm(forms.ModelForm):
             'storename': _('Store Name'),
             'storedesc': _('Store Description')
         }
+
+class editBoodleUserForm(forms.ModelForm):
+    
+    class Meta:
+        model = BoodleUser 
+        fields = ['displayname', 'username', 'userid']
+        widgets = {'userid': forms.HiddenInput()}
+
+        labels = {
+            'username': _('User Name'),
+            'displayname': _('Display Name')
+        }

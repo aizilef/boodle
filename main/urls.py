@@ -20,4 +20,5 @@ urlpatterns = [
     path('profile', tempProfile, name='profile'),
     path('profile/<int:pk>', profile, name='profileid'),
     path('editstore/<int:pk>', editStore, name='editstoreid'),
+    path('editProfile/<int:pk>', editProfile, name='editProfile'),
 ]

@@ -108,6 +108,9 @@ class BoodleUser(models.Model):
     class Meta:
         managed = False
         db_table = 'boodleuser'
+    
+    def __str__(self):
+        return '%s' % (self.userid)
 
 
 class DjangoAdminLog(models.Model):

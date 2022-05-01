@@ -227,15 +227,15 @@ def profile(request, pk):
     current_user = BoodleUser.objects.get(pk=pk)
     #auction bid user id = 3 --> bids user made --> know auctions g
     ## ⭐ the user that is logged in
-    bidsByUser = AuctionBid.objects.filter(boodleuserid=3).distinct('auctionid')
+    bids_by_user = AuctionBid.objects.filter(boodleuserid=3).distinct('auctionid')
 
-    auctionsOfUser = Auction.objects.all().distinct('auctionid')
-    idsOfAuction = []
+    auctions_of_user = Auction.objects.all().distinct('auctionid')
+    ids_of_auction = []
 
-    for bid in bidsByUser:
-        for auction in auctionsOfUser:
+    for bid in bids_by_user:
+        for auction in auctions_of_user:
             if bid.auctionid == auction:
-                idsOfAuction.append(bid.auctionid)
+                ids_of_auction.append(bid.auctionid)
                 
     # print("These are the distinct auction IDs: ", idsOfAuction)
 
@@ -261,24 +261,15 @@ def profile(request, pk):
             return redirect('profileid', pk=pk)
     # 🔥 
 
-    # checks if userid exists in store
-    # if current_user.userid in Store.objects.get():
-    #     if current_user:
-    #         current_store = Store.objects.filter(userid=pk)
-    #         # current_store = Store.objects.get(pk=pk)  
-    #         # if the current store exists, it will be the pk the 
-    #     else:
-    #         current_store.storeid = None # if current store doesnt exist (no user)
-
     context = {
         'displayname': current_user.displayname,
         'username': current_user.username,
         'user': current_user.userid,
         'store': current_storeid,
-        'bidsByUser' : bidsByUser,
-        'auctionsOfUser': auctionsOfUser,
+        'bidsByUser' : bids_by_user,
+        'auctions_of_user': auctions_of_user,
         'auctions': auctions,
-        'idsOfAuction': idsOfAuction,
+        'ids_of_auction': ids_of_auction,
         'createStoreForm': form
     }
 

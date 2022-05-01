@@ -59,8 +59,12 @@ class DeleteItemForm(forms.Form):
 class StartAuctionForm(forms.ModelForm):
 
     # the widget is supposed to have a pop up but not showing, keeping here bc it separates date and time nicely
-    auctionstart = forms.SplitDateTimeField(widget=AdminSplitDateTime())
-    auctionend = forms.SplitDateTimeField(widget=AdminSplitDateTime())
+    # auctionstart = forms.SplitDateTimeField(widget=AdminSplitDateTime())
+    # auctionend = forms.SplitDateTimeField(widget=AdminSplitDateTime())
+
+    # auctionstart = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
+    # auctionend = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
+
 
 
     class Meta:
@@ -75,17 +79,12 @@ class StartAuctionForm(forms.ModelForm):
             'itemid': _('Item up for auction')
         }
 
-        # datetime_format = ['%Y-%m-%d %H:%M']
-        # widgets = { 'auctionstart' : forms.AdminSplitDateTime()} #, 'auctionend' : forms.SplitDateTimeField()}
-        # vv fix later, is missing time widget
-        # widgets = { 'auctionstart' : forms.SelectDateWidget, 'auctionend':forms.SelectDateWidget}
-        # 'itemid': forms.HiddenInput()}
-
     def clean(self):
         
         super().clean()
-        end_time = self.cleaned_data['auctionend']
-        start_time = self.cleaned_data['auctionstart']
+        print(self.cleaned_data)
+        end_time = self.cleaned_data.get('auctionend')
+        start_time = self.cleaned_data.get('auctionstart')
         current_date = timezone.now()
 
         auctioned_item = self.cleaned_data['itemid']
@@ -95,7 +94,7 @@ class StartAuctionForm(forms.ModelForm):
         if start_time > end_time:
             raise ValidationError('Start date should be before end date.')
         elif start_time < current_date or end_time < current_date:
-            raise ValidationError('Date cannot be in the past')
+            raise ValidationError('Date cannot be in the past.')
         else:  
             for auc in auctions:
                 if auc.itemid == auctioned_item:

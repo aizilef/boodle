@@ -14,9 +14,21 @@
         {% csrf_token %}
         {{ form.as_p }}
     
-        <button type="submit" name="savesauction">Save Auction</button>
+        <button type="submit" name="savesauction">Start Auction</button>
     </form>
 </div>
+
+<input id="datetimepicker" type="text">
+
+<script>
+  $(function () {
+    $("#id_auctionstart").datetimepicker();
+  });
+
+  $(function () {
+    $("#id_auctionend").datetimepicker();
+  });
+</script>
 
 <!-- Form fields:
 [Auction Title]

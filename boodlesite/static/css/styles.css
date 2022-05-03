@@ -393,3 +393,24 @@ nav a {
   margin-top: .5rem;
   margin-bottom: .5rem;
 }
+
+/*===== EDIT PROFILE FORM =====*/
+.edit-profile-container {
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.profile-form-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 3rem;
+}
+
+.profile-submit-button {
+  border: none;
+  border-radius: 0.5rem;
+  padding: .3rem;
+  background-color: #F9BD82;
+}

@@ -12,6 +12,9 @@ import datetime, pytz
 from django.contrib.admin.widgets import AdminSplitDateTime
 from django.contrib.admin import widgets
 
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.contrib.auth.models import User
 
 from django.core.exceptions import ValidationError
     
@@ -123,3 +126,8 @@ class editBoodleUserForm(forms.ModelForm):
             'username': _('User Name'),
             'displayname': _('Display Name')
         }
+
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model=User
+        fields=['username', 'email', 'password1', 'password2']

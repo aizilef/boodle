@@ -21,4 +21,7 @@ urlpatterns = [
     path('profile/<int:pk>', profile, name='profileid'),
     path('editstore/<int:pk>', editStore, name='editstoreid'),
     path('editProfile/<int:pk>', editProfile, name='editProfile'),
+    path('login', loginPage, name='login'),
+    path('register', registerPage, name='register'),
+    path('logout', logoutUser, name='logout')
 ]

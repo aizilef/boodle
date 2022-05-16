@@ -1,14 +1,50 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
 
 from django.core.exceptions import ValidationError
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 
 from .models import *
 from .forms import *
 
 from datetime import datetime, timedelta
 
+def registerPage(request):
+    form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user_name = form.cleaned_data.get('username')
+            messages.success(request, 'Account was create for ' + user_name)
+            return redirect('login')
+            
+
+    context = {'form':form}
+    return render(request, 'boodlesite/templates/registration/register.html', context)
+
+def loginPage(request):
+    if request.method == 'POST':
+        user_name = request.POST.get('username')
+        pass_word = request.POST.get('password')
+        boodle_user = authenticate(request, username=user_name, password=pass_word)
+        
+        if boodle_user is not None:
+            login(request, boodle_user)
+            return redirect('/')
+        else:
+            messages.info(request, 'Username OR Password is incorrect') # all msgs get sent here will be output
+            
+    context = {}
+    return render(request, 'boodlesite/templates/registration/login.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
 
 def homepage(request):
     print(Auction.objects.all())

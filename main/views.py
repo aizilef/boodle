@@ -7,45 +7,56 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
+# restricting the views to logged in users, every view we want restricted
+from django.contrib.auth.decorators import login_required
+
 from .models import *
 from .forms import *
 
 from datetime import datetime, timedelta
 
 def registerPage(request):
-    form = CreateUserForm()
-
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            user_name = form.cleaned_data.get('username')
-            messages.success(request, 'Account was create for ' + user_name)
-            return redirect('login')
+    # dont want a logged in user to see this
+    if request.user.is_authenticated:
+        return redirect('/')
+    else:
+        form = CreateUserForm()
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                user_name = form.cleaned_data.get('username')
+                messages.success(request, 'Account was create for ' + user_name)
+                return redirect('login')
             
 
-    context = {'form':form}
-    return render(request, 'boodlesite/templates/registration/register.html', context)
+        context = {'form':form}
+        return render(request, 'boodlesite/templates/registration/register.html', context)
 
 def loginPage(request):
-    if request.method == 'POST':
-        user_name = request.POST.get('username')
-        pass_word = request.POST.get('password')
-        boodle_user = authenticate(request, username=user_name, password=pass_word)
-        
-        if boodle_user is not None:
-            login(request, boodle_user)
-            return redirect('/')
-        else:
-            messages.info(request, 'Username OR Password is incorrect') # all msgs get sent here will be output
+    # dont want a logged in user to see this
+    if request.user.is_authenticated:
+        return redirect('/')
+    else:
+        if request.method == 'POST':
+            user_name = request.POST.get('username')
+            pass_word = request.POST.get('password')
+            boodle_user = authenticate(request, username=user_name, password=pass_word)
             
-    context = {}
-    return render(request, 'boodlesite/templates/registration/login.html', context)
+            if boodle_user is not None:
+                login(request, boodle_user)
+                return redirect('/')
+            else:
+                messages.info(request, 'Username OR Password is incorrect') # all msgs get sent here will be output
+                
+        context = {}
+        return render(request, 'boodlesite/templates/registration/login.html', context)
 
 def logoutUser(request):
     logout(request)
     return redirect('login')
 
+@login_required(login_url='login')
 def homepage(request):
     print(Auction.objects.all())
 
@@ -67,6 +78,7 @@ def homepage(request):
 
     return render(request, "boodlesite/templates/index.html",context)    
 
+@login_required(login_url='login')
 def auction(request,pk):
 
     # Current auction ID
@@ -119,9 +131,11 @@ def auction(request,pk):
     else:
         return render(request, "boodlesite/templates/auction.html",context)    
 
+@login_required(login_url='login')
 def error404(request):
     return render(request, "boodlesite/templates/error404/notstarted_error404.html")
 
+@login_required(login_url='login')
 def tempstore(request): # temp view
 
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
@@ -133,6 +147,7 @@ def tempstore(request): # temp view
 
     return render(request, "boodlesite/templates/tempstore.html", context)
 
+@login_required(login_url='login')
 def mystore(request, pk):
 
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
@@ -165,6 +180,7 @@ def mystore(request, pk):
 
     return render(request, "boodlesite/templates/store.html", context)
 
+@login_required(login_url='login')
 def addItem(request, pk):
 
     # Current Store, pk here is the storeid
@@ -186,6 +202,7 @@ def addItem(request, pk):
 
     return render(request, "boodlesite/templates/additem.html", context)
 
+@login_required(login_url='login')
 def editItem(request, pk):
 
     item = Item.objects.get(itemid=pk)
@@ -205,6 +222,7 @@ def editItem(request, pk):
 
     return render(request, "boodlesite/templates/additem.html", context)
 
+@login_required(login_url='login')
 def startAuction(request, pk):
 
     # pk is store id
@@ -245,6 +263,7 @@ def startAuction(request, pk):
 
     return render(request, "boodlesite/templates/startauction.html", context)
 
+@login_required(login_url='login')
 def tempProfile(request): # temp view
 
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
@@ -258,6 +277,7 @@ def tempProfile(request): # temp view
 
     return render(request, "boodlesite/templates/tempprofile.html", context)
 
+@login_required(login_url='login')
 def profile(request, pk):
     
     current_user = BoodleUser.objects.get(pk=pk)
@@ -311,6 +331,7 @@ def profile(request, pk):
 
     return render(request, "boodlesite/templates/profile.html", context)
 
+@login_required(login_url='login')
 def editStore(request, pk):
 
     store= Store.objects.get(storeid=pk)
@@ -330,6 +351,7 @@ def editStore(request, pk):
 
     return render(request, "boodlesite/templates/storeForm.html", context)
 
+@login_required(login_url='login')
 def editProfile(request, pk):
 
     user= BoodleUser.objects.get(userid=pk) # boodleuser object

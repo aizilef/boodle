@@ -21,9 +21,9 @@ from django.core.exceptions import ValidationError
 class PlaceBidForm(forms.ModelForm):
     class Meta:
         model = AuctionBid
-        fields = ['amount', 'boodleuserid', 'auctionid']
+        fields = ['amount', 'userid', 'auctionid']
         widgets = {'auctionid': forms.HiddenInput(), 
-            'boodleuserid': forms.HiddenInput()
+            'userid': forms.HiddenInput()
         }
 
     def clean(self):
@@ -118,13 +118,12 @@ class CreateStoreForm(forms.ModelForm):
 class editBoodleUserForm(forms.ModelForm):
     
     class Meta:
-        model = BoodleUser 
-        fields = ['displayname', 'username', 'userid']
-        widgets = {'userid': forms.HiddenInput()}
+        model = AuthUser 
+        fields = ['username', 'id']
+        widgets = {'id': forms.HiddenInput()}
 
         labels = {
-            'username': _('User Name'),
-            'displayname': _('Display Name')
+            'username': _('User Name')
         }
 
 class CreateUserForm(UserCreationForm):

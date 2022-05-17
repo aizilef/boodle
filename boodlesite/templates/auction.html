@@ -76,7 +76,7 @@
         {% if auction_bids %}
         {% for bid in auction_bids %}
         <li><img src="" alt="">
-          <p>{{bid.boodleuserid.displayname}} offered {{ bid.amount }}</p>
+          <p>{{bid.userid.username}} offered {{ bid.amount }}</p>
           <p> &nbsp | &nbsp </p>
           <p>{{bid.bidtime | timesince}} ago </p>
 

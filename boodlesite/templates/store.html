@@ -15,9 +15,9 @@
         <div class="store-info">
             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
             <h1>{{ current_store.storename }}</h1>
-            <p>@username</p>
+            <p>@<a href="{% url 'profileid' store_owner.id %}">{{ store_owner.username }}</a> </p>
             <!-- EDIT STORE STUFF -->
-            <button class="edit-shop-btn" type="button">
+            <button class="btn profile-btn" type="button">
                 <a href="{% url 'editstoreid' current_store.storeid %}">Edit Store Info</a>
             </button>
         </div>
@@ -46,12 +46,14 @@
                 <h4 id="item-name">{{ item.itemname }}</h4>
                 <p id="item-price">₱ {{item.floorprice}} </p>
             </div>
-            <div class="item-btns"> <button>Auction</button> <button><a
-                        href="{% url 'edititemid' item.itemid %}">Edit</a></button>
+            <div class="btn-group item-btns">
+                <button class="btn profile-btn"><a
+                    href="{% url 'edititemid' item.itemid %}">Edit</a></button>
 
-                <!-- <button>Delete</button> -->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#delete_{{ item.itemid }}" data-whatever="@mdo">Delete</button>
+            <button type="button" class="btn profile-btn" data-toggle="modal"
+                data-target="#delete_{{ item.itemid }}" data-whatever="@mdo">Delete</button>
+            </div>
+            
 
 
                 <div class="modal fade" id="delete_{{ item.itemid }}" tabindex="-1" role="dialog"
@@ -95,15 +97,7 @@
         {% else %}
         <h4 text-align="center"> Your Inventory is empty. </h4>
         {% endif %}
-        <!-- <div class="store-item">
-            <img src="https://www.kurin.com/wp-content/uploads/placeholder-square.jpg">
-            <div class="item-info">
-                <h4>Itemname</h4>
-                <p>Itemdescription <span class="item-price">PHP 500</span></p>
-            </div>
-            <div class="item-btns"> <button>Auction</button> <button>Edit</button> <button>Delete</button>
-            </div>
-        </div> -->
+       
 
 
 
@@ -113,10 +107,14 @@
 </div>
 
 <div class="store-btns-container">
+    <div class="btn-group">
 
-    <button type="button"><a href="{% url 'startauctionid' current_store.storeid %}">Start Auction</a></button>
+        <button class="btn profile-btn" type="button"><a href="{% url 'startauctionid' current_store.storeid %}">Start Auction</a></button>
 
-    <button type="button"><a href="{% url 'additemid' current_store.storeid %}">Add Item</a></button>
+        <button class="btn profile-btn" type="button"><a href="{% url 'additemid' current_store.storeid %}">Add Item</a></button>
+    </div>
+
+    
 </div>
 </div>
 

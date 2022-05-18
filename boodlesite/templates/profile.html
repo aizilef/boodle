@@ -10,29 +10,29 @@
 {% block content %}
 <div class="profile-container">
     <div class="username-section displayname profile-element">
-        <h2>This is {{ displayname }}'s profile</h2>
+        <!-- <h2>This is {{ displayname }}'s profile</h2> -->
     </div>
-    <div class-"user-img userimage profile-element">
+    <div class="profile-image profile-element">
         <img src="https://minimaltoolkit.com/images/randomdata/female/64.jpg" alt="profile-image">
     </div>
-    <div class "username profile-element">
-        <h4> {{ username }} </h4>
+    <div class="username profile-element">
+        <h4> {{ username }}'s profile </h4>
     </div>
-    <div class="btn-group profile-element" role="group" aria-label="Basic example">
+    <div class="btn-group profile-element">
         <!--If a user owns a store, they can access the store-->
         {% if store %}
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn profile-btn">
                 <a href= "{% url 'storeid' store %}" >
                     My Store 
                 </a>
             </button>
         <!--If a user does not own a store, they can create a store-->
         {% else %}    
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createStoreModal"
+            <button type="button" class="btn profile-btn" data-toggle="modal" data-target="#createStoreModal"
             data-whatever="@mdo">Create Store</button>
         {% endif %}    
 
-        <button type="button" class="btn btn-primary">
+        <button type="button" class="btn profile-btn">
             <a href= "{% url 'editProfile' user %}" >
                 Edit Profile
             </a></button>
@@ -40,7 +40,9 @@
 </div>
 
 <!--Change auctions_now, auction to like favorites, favorite-->
-<h2> Items {{displayname}} bid on </h2>
+<div class="header-container">    
+    <h2> Current Biddings</h2>
+</div>
 <div class="event-container">
     {% if auctions_of_user %}
     {% for id in ids_of_auction %} 
@@ -56,7 +58,7 @@
     {% endfor %}
     
     {% else %}
-        <h3> No Favorites.</h3>
+        <h4> {{displayname}} has no current biddings.</h4>
     {% endif %}
     </div>
 

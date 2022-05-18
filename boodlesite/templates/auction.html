@@ -68,14 +68,14 @@
       <!-- latest bids / history -->
       <div class="bid-header">
       <h1>Latest Bids  </h1>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#placeBidModal"
+      <button type="button" class="btn profile-btn" data-toggle="modal" data-target="#placeBidModal"
         data-whatever="@mdo">Place Bid</button>
       </div>
       <ul class="cards">
 
         {% if auction_bids %}
         {% for bid in auction_bids %}
-        <li><img src="" alt="">
+        <li><img src="https://minimaltoolkit.com/images/randomdata/female/64.jpg" alt="">
           <p>{{bid.userid.username}} offered {{ bid.amount }}</p>
           <p> &nbsp | &nbsp </p>
           <p>{{bid.bidtime | timesince}} ago </p>

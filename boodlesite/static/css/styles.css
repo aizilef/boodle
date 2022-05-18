@@ -12,10 +12,16 @@ body {
   color: #3d3838;
 }
 
+h1,h2 {
+  font-weight: bold;
+}
+
 .carousel-item img {
   max-height: 600px;
   min-width: auto;
 }
+
+
 
 /* nav bar */
 nav {
@@ -118,7 +124,7 @@ nav a {
 }
 
 
-.about-text {background-color: #f0f0f0; box-shadow:1rem 1rem #333fcd; padding:1rem 2rem;}
+.about-text {background-color: #f0f0f0; padding:1rem 2rem;}
 .about-text p { font-size: 18px; }
 
 #btn-read-more {
@@ -199,7 +205,7 @@ nav a {
   width: 80px;
   height: 80px;
   border-radius: 100%;
-  border: 2px dotted black;
+  border: 2px solid black;
   shape-outside: circle(50%);
 }
 
@@ -236,7 +242,6 @@ nav a {
 
 .product-info {
   padding: 8px 16px 8px 0;
-  border: 2px dotted black;
 }
 
 .form-group.placebid {
@@ -288,14 +293,17 @@ nav a {
 .store-info {
   position: absolute;
   color: white;
-  border: 2px solid black;
-  bottom: 8px;
+  bottom: 20px;
   left: 4rem;
   text-align: left !important;
   min-width: 50%;
   max-width: 100%;
   z-index: +1;
 
+}
+
+.store-info a {
+  color: white;
 }
 
 .store-info img {
@@ -342,8 +350,8 @@ nav a {
 
 .store-item {
 
-  background-color: skyblue;
-  border: 2px dotted black;
+  background-color: white;
+  /* border: 2px dotted black; */
 
 }
 
@@ -371,6 +379,7 @@ nav a {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 4rem;
 }
 
 /* item detail view / add, edit item */
@@ -394,6 +403,20 @@ nav a {
   margin-bottom: .5rem;
 }
 
+.profile-image.profile-element img {
+  border-radius: 50%;
+  height:100px;
+}
+
+.profile-btn {
+  background-color: black;
+  color:white;
+}
+
+.profile-btn a {
+  color:white;
+}
+
 /*===== EDIT PROFILE FORM =====*/
 .edit-profile-container {
   margin: 0 auto;
@@ -414,3 +437,4 @@ nav a {
   padding: .3rem;
   background-color: #F9BD82;
 }
+

@@ -15,32 +15,37 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img class="d-block w-100"
-                    src="https://media.istockphoto.com/photos/face-cream-serum-lotion-moisturizer-and-sea-salt-among-bamboo-leaves-picture-id1136422297?k=20&m=1136422297&s=612x612&w=0&h=fk-Du8-BxBYn4rtint_HULFN5FpUWNeaBQye9DoSzpc="
+                    src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?ixlib=rb-1.2.1&raw_url=true&q=80&fm=jpg&crop=entropy&cs=tinysrgb&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070"
                     alt="First slide">
                     <div class="carousel-content">
+                        <h3>— Hello, {{request.user}}. </h3>
                         <h1>Welcome to Boodle.</h1>
                         <p>Your ultimate online auctioning platform.</p>
-                        <button id="btn-shop-now" onclick="scrollDown()">Shop now</button>
+                        <button class="btn profile-btn" onclick="scrollDown()">Shop now</button>
                     </div>
             </div>
             <div class="carousel-item">
                 <img class="d-block w-100"
-                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80"
+                    src="https://images.unsplash.com/photo-1570747408017-38b4c5959378?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069"
                     alt="Second slide">
                     <div class="carousel-content">
-                        <h1>Slide 2.</h1>
-                        <p>Lorem ipsum</p>
-                        <button onclick="scrollDown()">Shop now</button>
+                        
+                        <h3>— Hello, {{request.user}}. </h3>
+                        <h1>Welcome to Boodle.</h1>
+                        <p>Your ultimate online auctioning platform.</p>
+                        <button class="btn profile-btn" onclick="scrollDown()">Shop now</button>
                     </div>
             </div>
             <div class="carousel-item">
                 <img class="d-block w-100"
-                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&w=1000&q=80"
+                    src="https://images.unsplash.com/photo-1546387903-6d82d96ccca6?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071"
                     alt="Third slide">
                     <div class="carousel-content">
-                        <h1>Slide 3.</h1>
-                        <p>Lorem ipsum</p>   
-                        <button onclick="scrollDown()">Shop now</button>
+                        
+                        <h3>— Hello, {{request.user}}. </h3>
+                        <h1>Welcome to Boodle.</h1>
+                        <p>Your ultimate online auctioning platform.</p>
+                        <button class="btn profile-btn"  onclick="scrollDown()">Shop now</button>
                     </div>
             </div>
         </div>
@@ -59,7 +64,7 @@
 <div class="container-fluid about">
     <div class="row container-about">
         <div class="col-lg-5 col-md-6 about-left">
-            <img src="https://media.istockphoto.com/vectors/mobile-shopping-vector-id1152401093?b=1&k=20&m=1152401093&s=612x612&w=0&h=rE_UnLvBcOmq32s4mX0mZSaidfeGkgLOe5EiI7DbJ4Q=">
+            <img src="https://images.unsplash.com/photo-1454117096348-e4abbeba002c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80">
         </div>
         <div class="col-lg-7 col-md-6 about-right">
             <div class="about-text">
@@ -108,7 +113,6 @@
     {% if auctions_soon %}
     {% for auction in auctions_soon %}
     <div class="event">
-        <!-- <img src="../static/media/beast.jpg" alt=""> -->
         <img src="http://via.placeholder.com/640x360" alt="">
 
         <div class="event-text">

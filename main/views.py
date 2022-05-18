@@ -148,6 +148,7 @@ def mystore(request, pk):
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
     # pk is storeid
     current_store = Store.objects.get(pk=pk)
+    store_owner = current_store.userid
     store_items = Item.objects.filter(storeid=pk)
 
     all_auctions = Auction.objects.all()
@@ -169,6 +170,7 @@ def mystore(request, pk):
 
     context = {
         'current_store':current_store,
+        'store_owner':store_owner,
         'store_items':store_items,
         'form':form
     }

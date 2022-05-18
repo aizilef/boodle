@@ -91,6 +91,9 @@ def auction(request,pk):
     auction = Auction.objects.get(pk=pk)
     # Item for auction
     auction_item = auction.itemid # this is the itemfk thru auction
+    # Host
+    auction_host = auction_item.storeid
+
     # Auction bids
     auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
     highest_bid = auction_item.floorprice 
@@ -122,6 +125,7 @@ def auction(request,pk):
     context = {
         'item_name':auction_item.itemname,
         'item_specs': auction_item.itemspecs,
+        'auction_host':auction_host,
         'auction_bids' : auction_bids,
         'item_floor_price': auction_item.floorprice,
         'highest_bid': highest_bid,

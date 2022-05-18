@@ -61,7 +61,7 @@
         <p>Sold by {{ auction_host.storename }}</p>
 
         <p>{{ item_specs }}</p>
-        <h4>Starting at: ₱ {{item_floor_price}}</h4>
+        <h4>Starting at: ₱ {{item_floor_price | floatformat:2 }}</h4>
        
 
       </div>
@@ -78,7 +78,7 @@
         {% if auction_bids %}
         {% for bid in auction_bids %}
         <li><img src="https://minimaltoolkit.com/images/randomdata/female/64.jpg" alt="">
-          <p>{{bid.userid.username}} offered {{ bid.amount }}</p>
+          <p>{{bid.userid.username}} offered  ₱{{ bid.amount | floatformat:2}}</p>
           <p> &nbsp | &nbsp </p>
           <p>{{bid.bidtime | timesince}} ago </p>
 
@@ -112,7 +112,7 @@ aria-hidden="true">
       <form action="" method="POST">
         <div class="form-group placebid">
           <h5>Current Highest Bid: </h5>
-          <h3>PHP {{highest_bid}}</h3>
+          <h3>₱{{highest_bid | floatformat:2}}</h3>
           {% csrf_token %}
           {{ form }}
         </div>

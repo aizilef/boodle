@@ -44,7 +44,7 @@
             <img src="https://www.kurin.com/wp-content/uploads/placeholder-square.jpg">
             <div class="item-info">
                 <h4 id="item-name">{{ item.itemname }}</h4>
-                <p id="item-price">₱ {{item.floorprice}} </p>
+                <p id="item-price">₱ {{item.floorprice | floatformat:2}} </p>
             </div>
             <div class="btn-group item-btns">
                 <button class="btn profile-btn"><a

@@ -9,18 +9,25 @@
 
 {% block content %}
 
+
+
 <div class="container">
     <form action="" method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-    
-        <button type="submit" name="savesauction">Start Auction</button>
+        <div class="form-space">
+            {{ form.as_p }}
+        </div>
+        <div class="button-space">
+            <button type="button" class="btn btn-danger"><a href= "{% url 'storeid' request.user.id %}">Cancel</a></button>
+            <button type="submit" class="btn btn-dark" name="savesauction">Save Auction</button>
+        </div>
     </form>
+    
 </div>
 
 <input id="datetimepicker" type="text">
 
-<script>
+<!-- <script>
   $(function () {
     $("#id_auctionstart").datetimepicker();
   });
@@ -28,7 +35,7 @@
   $(function () {
     $("#id_auctionend").datetimepicker();
   });
-</script>
+</script> -->
 
 <!-- Form fields:
 [Auction Title]

@@ -1,16 +1,68 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
 
 from django.core.exceptions import ValidationError
-from django.utils import timezone 
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+
+# restricting the views to logged in users, every view we want restricted
+from django.contrib.auth.decorators import login_required
 
 from .models import *
 from .forms import *
 
 from datetime import datetime, timedelta
 
+def registerPage(request):
+    # dont want a logged in user to see this
+    if request.user.is_authenticated:
+        return redirect('/')
+    else:
+        form = CreateUserForm()
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                user_name = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password1')
+                messages.success(request, 'Account was create for ' + user_name)
 
+                # boodleuser_inst = BoodleUser.objects.create(displayname=user_name, pword=password, username=user_name)
+                # boodleuser_inst.save()
+
+                return redirect('login')
+            
+
+        context = {'form':form}
+        return render(request, 'boodlesite/templates/registration/register.html', context)
+
+def loginPage(request):
+
+    # dont want a logged in user to see this
+    if request.user.is_authenticated:
+        return redirect('/')
+    else:
+        if request.method == 'POST':
+            user_name = request.POST.get('username')
+            pass_word = request.POST.get('password')
+            boodle_user = authenticate(request, username=user_name, password=pass_word)
+            
+            if boodle_user is not None:
+                login(request, boodle_user)
+                return redirect('/')
+            else:
+                messages.info(request, 'Username OR Password is incorrect') # all msgs get sent here will be output
+                
+        context = {}
+        return render(request, 'boodlesite/templates/registration/login.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
+
+@login_required(login_url='login')
 def homepage(request):
     print(Auction.objects.all())
 
@@ -32,6 +84,7 @@ def homepage(request):
 
     return render(request, "boodlesite/templates/index.html",context)    
 
+@login_required(login_url='login')
 def auction(request,pk):
 
     # Current auction ID
@@ -43,23 +96,24 @@ def auction(request,pk):
     highest_bid = auction_item.floorprice 
     
     ## ⭐ the user that is logged in
-    users = BoodleUser.objects.get(userid=3) 
-    userid = users.userid 
+
+    users = AuthUser.objects.get(id=request.user.id) 
+    userid = users.id 
 
     if auction_bids:
         highest_bid = auction_bids[0].amount
 
     # PLACE BID FORM AND ADD TO FAVES FORM
-    form = PlaceBidForm(initial={'auctionid':auction, 'boodleuserid':users})
+    form = PlaceBidForm(initial={'auctionid':auction, 'userid':userid})
     if request.method == 'POST':
-        form = PlaceBidForm(request.POST,initial={'auctionid':auction, 'boodleuserid':users})
+        form = PlaceBidForm(request.POST,initial={'auctionid':auction, 'userid':userid})
         if form.is_valid():
             try:
                 amount = form.cleaned_data['amount']
                 # saves the bid by auctionid, amount, bidtime, boodleuserid
                 new_bid = AuctionBid(
                     amount=amount, bidtime=datetime.now(),
-                    auctionid=auction, boodleuserid=users)
+                    auctionid=auction, userid=users)
                 new_bid.save()
                 return redirect(f"/auction/{pk}")
             except Exception as e:
@@ -73,7 +127,7 @@ def auction(request,pk):
         'highest_bid': highest_bid,
         'auction_title': auction.title,
         'auction_end':  auction.auctionend,
-        'user_profile': userid,
+        'user_profile': users,
         'form' : form,
     }
 
@@ -84,20 +138,19 @@ def auction(request,pk):
     else:
         return render(request, "boodlesite/templates/auction.html",context)    
 
+@login_required(login_url='login')
 def error404(request):
     return render(request, "boodlesite/templates/error404/notstarted_error404.html")
 
-def tempstore(request): # temp view
+@login_required(login_url='login')
+def about(request):
+    return render(request, "boodlesite/templates/about.html")
 
-    #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
-    current_store = Store.objects.get(storeid=1)
+@login_required(login_url='login')
+def help(request):
+    return render(request, "boodlesite/templates/help.html")
 
-    context = {
-        'current_store':current_store #### used for navbar, access to store 1
-    }
-
-    return render(request, "boodlesite/templates/tempstore.html", context)
-
+@login_required(login_url='login')
 def mystore(request, pk):
 
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
@@ -106,6 +159,7 @@ def mystore(request, pk):
     store_items = Item.objects.filter(storeid=pk)
 
     all_auctions = Auction.objects.all()
+    all_bids = AuctionBid.objects.all()
 
     form = DeleteItemForm()
 
@@ -116,6 +170,11 @@ def mystore(request, pk):
             current_item = Item.objects.get(itemid=item_id)
             for auction in all_auctions:
                 if auction.itemid == current_item:
+
+                    for bids in all_bids:
+                        if bids.auctionid == auction:
+                            AuctionBid.objects.filter(auctionid=auction.auctionid).delete()
+
                     Auction.objects.filter(itemid=item_id).delete()
                     
             Item.objects.get(itemid=item_id).delete()
@@ -130,6 +189,7 @@ def mystore(request, pk):
 
     return render(request, "boodlesite/templates/store.html", context)
 
+@login_required(login_url='login')
 def addItem(request, pk):
 
     # Current Store, pk here is the storeid
@@ -151,6 +211,7 @@ def addItem(request, pk):
 
     return render(request, "boodlesite/templates/additem.html", context)
 
+@login_required(login_url='login')
 def editItem(request, pk):
 
     item = Item.objects.get(itemid=pk)
@@ -170,21 +231,23 @@ def editItem(request, pk):
 
     return render(request, "boodlesite/templates/additem.html", context)
 
+@login_required(login_url='login')
 def startAuction(request, pk):
 
     # pk is store id
     current_store = Store.objects.get(pk=pk)
     store_id = current_store.storeid
     # get items under this store
-    store_items = Item.objects.filter(storeid=pk)
+    store_items = Item.objects.filter(storeid=store_id)
     # Current userid, change as per ⭐ whoever is logged in
-    user = BoodleUser.objects.get(userid=3)
-    userid = user.userid
+    user = AuthUser.objects.get(id=request.user.id)
+    userid = user.id
 
     # temp: all auctions
     all_auctions = Auction.objects.all()
 
     form = StartAuctionForm(initial={'auctionstart':datetime.now()})
+    form.fields["itemid"].queryset = store_items
 
     if request.method == 'POST':
         form = StartAuctionForm(request.POST)
@@ -210,33 +273,21 @@ def startAuction(request, pk):
 
     return render(request, "boodlesite/templates/startauction.html", context)
 
-def tempProfile(request): # temp view
-
-    #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
-    user_one =BoodleUser.objects.get(userid=1) # shrek
-    user_two = BoodleUser.objects.get(userid=3) ## tony
-
-    context = {
-        'user_one':user_one, #### used for navbar, access to user1
-        'user_two':user_two, #### used for navbar, access to user1
-    }
-
-    return render(request, "boodlesite/templates/tempprofile.html", context)
-
+@login_required(login_url='login')
 def profile(request, pk):
     
-    current_user = BoodleUser.objects.get(pk=pk)
+    current_user = AuthUser.objects.get(pk=pk)
     #auction bid user id = 3 --> bids user made --> know auctions g
     ## ⭐ the user that is logged in
-    bidsByUser = AuctionBid.objects.filter(boodleuserid=3).distinct('auctionid')
+    bids_by_user = AuctionBid.objects.filter(userid=pk).distinct('auctionid')
 
-    auctionsOfUser = Auction.objects.all().distinct('auctionid')
-    idsOfAuction = []
+    auctions_of_user = Auction.objects.all().distinct('auctionid')
+    ids_of_auction = []
 
-    for bid in bidsByUser:
-        for auction in auctionsOfUser:
+    for bid in bids_by_user:
+        for auction in auctions_of_user:
             if bid.auctionid == auction:
-                idsOfAuction.append(bid.auctionid)
+                ids_of_auction.append(bid.auctionid)
                 
     # print("These are the distinct auction IDs: ", idsOfAuction)
 
@@ -251,7 +302,7 @@ def profile(request, pk):
     won_itemids = []
     won_auctions = []
 
-    for aucid in idsOfAuction:
+    for aucid in ids_of_auction:
 
         tempAuction = Auction.objects.get(pk=aucid.auctionid)
         auctionend = tempAuction.auctionend
@@ -270,14 +321,14 @@ def profile(request, pk):
 
 
     # 🔥Current Store, pk here is the storeid
-    current_user = BoodleUser.objects.get(pk=pk)
+    current_user = AuthUser.objects.get(pk=pk)
     form = CreateStoreForm(initial={'userid':pk})
 
-    current_store = Store.objects.filter(userid=current_user.userid)
+    current_store = Store.objects.filter(userid=current_user.id)
     current_storeid = None
 
     for i in current_store:
-        current_storeid = i
+        current_storeid = i.storeid
 
     if request.method == 'POST':
         form = CreateStoreForm(request.POST, initial={'userid':pk}) 
@@ -287,24 +338,21 @@ def profile(request, pk):
             return redirect('profileid', pk=pk)
     # 🔥 
 
-
     context = {
-        'displayname': current_user.displayname,
+        'displayname': current_user.username,
         'username': current_user.username,
-        'user': current_user.userid,
+        'user': current_user.id,
         'store': current_storeid,
-        'bidsByUser' : bidsByUser,
-        'auctionsOfUser': auctionsOfUser,
+        'bidsByUser' : bids_by_user,
+        'auctions_of_user': auctions_of_user,
         'auctions': auctions,
-        'idsOfAuction': idsOfAuction,
-        'won_items': won_itemids,
-        'won_auctions':won_auctions,
-        'currentdate':current_date,
+        'ids_of_auction': ids_of_auction,
         'createStoreForm': form
     }
 
     return render(request, "boodlesite/templates/profile.html", context)
 
+@login_required(login_url='login')
 def editStore(request, pk):
 
     store= Store.objects.get(storeid=pk)
@@ -324,10 +372,11 @@ def editStore(request, pk):
 
     return render(request, "boodlesite/templates/storeForm.html", context)
 
+@login_required(login_url='login')
 def editProfile(request, pk):
 
-    user= BoodleUser.objects.get(userid=pk) # boodleuser object
-    current_user = user.userid #boodle user id
+    user= AuthUser.objects.get(id=pk) # authuser object
+    current_user = user.id # auth user id
     form = editBoodleUserForm(instance=user)
 
     if request.method == 'POST':

@@ -9,32 +9,21 @@
 
 {% block content %}
 
-<div class="container">
-    <h1>{{ title }}</h1> 
-    <div class="row">
-        <div class="col-lg-7 col-md-6">ITEM IMAGE CONTAINER
-            <div class="item-image-container"></div>
-        </div>
-        <div class=" col-lg-5 col-md-6">ITEM FORM CONTAINER
-            <div class="item-form-container">
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                
+<div class="edit-profile-container">
+    <h1>{{ title }}</h1>
+    <div class="">
+        <div class="profile-form-container">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+            <div class="button-space">
+                <button type="button" class="btn btn-danger"><a href= "{% url 'profileid' request.user.id %}">Cancel</a></button>
+                <button class="profile-submit-button btn btn-dark" type="submit" name="Add Item"> Save Changes </button>
             </div>
-                <button type="submit" name="Add Item"> Save Changes </button>
             </form>
-        </div>
+        </div>    
+        
     </div>
 </div>
-
-<!-- Form with fields:
-[Item name]
-[Item Description]
-[Floor Price] -->
-
-<!-- Image, if no image add image -->
-
-
 
 {% endblock %}

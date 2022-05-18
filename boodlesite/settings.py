@@ -36,7 +36,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth', # Login, logout
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -134,4 +134,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'boodlesite\media')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'boodlesite\static'),
 ]
-

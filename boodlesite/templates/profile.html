@@ -22,7 +22,7 @@
         <!--If a user owns a store, they can access the store-->
         {% if store %}
             <button type="button" class="btn btn-primary">
-                <a href= "{% url 'storeid' store %}" >
+                <a href= "{% url 'storeid' store %}" style="color: white" >
                     My Store 
                 </a>
             </button>
@@ -33,7 +33,7 @@
         {% endif %}    
 
         <button type="button" class="btn btn-primary">
-            <a href= "{% url 'editProfile' user %}" >
+            <a href= "{% url 'editProfile' user %}" style="color: white" >
                 Edit Profile
             </a></button>
     </div>
@@ -61,9 +61,8 @@
 <!--Change auctions_now, auction to like favorites, favorite-->
 <h2> Items {{displayname}} bid on </h2>
 <div class="event-container">
-    {% if auctionsOfUser %}
-    {% for id in idsOfAuction %} 
-        {% if id.auctionend > currentdate %}
+    {% if auctions_of_user %}
+    {% for id in ids_of_auction %} 
         <div class="event">
             <img src="http://via.placeholder.com/640x360" alt="">
             <div class="event-text">
@@ -73,7 +72,6 @@
                 <p>{{ id.auctionend }}</p>
             </div> 
                 </div>
-        {% endif %}
     {% endfor %}
     
     {% else %}

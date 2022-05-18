@@ -1,0 +1,69 @@
+{% extends 'boodlesite\templates\base.html' %}
+{% load static %}
+
+
+{% block title %}Profile{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+
+<div class="help-container">
+    <p class="help-header">FAQ</p>
+    <div class="help-perq">
+        <details>
+          <summary>Placing a Bid</summary>
+            <ul class="help-text">
+                <li>To place a bid, go to the homepage to check all on-going auctions </li>
+                <li>Find the desired auction and click on the title to go to the auction title</li>
+                <li>At the auction, click on the "Place Bid" button near the latest bids</li>
+                <li>A pop-up will appear, enter the a desired bidding value in the input box
+                <br>     *Please note: only bids higher than the current highest bid will go through</li>
+                <li>Once you place the desired bid, click submit and the bid should appear in latest bid</li>
+            
+            </ul>
+        </details>
+        <details>
+          <summary>Creating a Store</summary>
+            <ul class="help-text">
+                <li>Access your profile by clicking the link "My Profile" on the nav bar </li>
+                <li>Once accessed, below your profile picture is the button "Create Store"</li>
+                <li>Click this button and a pop up will appear where you input the desired store information</li>
+                <li>Once you click "Submit", the button will change into a link to access your store</li>
+            </ul>
+        </details>
+        <details>
+          <summary>Inventory Management</summary>
+            <ul class="help-text">
+                <li>To access your store, click the "My Store" button on the profile page</li>
+                <li>At the store page, you can view the current items in your inventory </li>
+                <li>Each item has the option to edit and delete an item below the item name</li>
+                <li>To add an item, click the "Add Item" button at the bottom of the page</li>
+                <li>Once selected, you will be redirected to a page where you can input the necessary information for an item</li>
+                <li>Once filled, select "Add Item" button and the item should appear on your store page</li>
+            </ul>
+        </details>
+        <details>
+            <summary>Starting an Auction</summary>
+                <ul class="help-text">
+                    <li>To access your store, click the "My Store" button on the profile page</li>
+                    <li>To start an auction, select the "Start Auction" button at the bottom of the page
+                    <br>     *Note: You must have an existing item to start an auction and you cannot create duplicate auctions for a single item</li>
+                    <li>Once selected, you will be redirected to a page where you can input the necessary information for the auction</li>
+                    <li>Once filled, select "Start Auction" button and the auction should appear on the homepage</li>
+                </ul>
+        </details>
+        <details>
+            <summary>Profile Management</summary>
+                <ul class="help-text">
+                    <li>Access your profile by clicking the link "My Profile" on the nav bar</li>
+                    <li>Below the profile picture, there will be a button "Edit Profile"</li>
+                    <li>Clicking this button, the you will be redirected to change your username</li>
+                    <li>After filling it up and selecting "Save Changes". The changes will appear on the profile.</li>
+                </ul>
+        </details>
+    </div>
+ </div>
+
+{% endblock %}

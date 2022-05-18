@@ -12,15 +12,18 @@ import datetime, pytz
 from django.contrib.admin.widgets import AdminSplitDateTime
 from django.contrib.admin import widgets
 
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.contrib.auth.models import User
 
 from django.core.exceptions import ValidationError
     
 class PlaceBidForm(forms.ModelForm):
     class Meta:
         model = AuctionBid
-        fields = ['amount', 'boodleuserid', 'auctionid']
+        fields = ['amount', 'userid', 'auctionid']
         widgets = {'auctionid': forms.HiddenInput(), 
-            'boodleuserid': forms.HiddenInput()
+            'userid': forms.HiddenInput()
         }
 
     def clean(self):
@@ -62,10 +65,8 @@ class StartAuctionForm(forms.ModelForm):
     # auctionstart = forms.SplitDateTimeField(widget=AdminSplitDateTime())
     # auctionend = forms.SplitDateTimeField(widget=AdminSplitDateTime())
 
-    # auctionstart = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
-    # auctionend = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
-
-
+    auctionstart = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
+    auctionend = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
 
     class Meta:
         model = Auction
@@ -86,7 +87,6 @@ class StartAuctionForm(forms.ModelForm):
         end_time = self.cleaned_data.get('auctionend')
         start_time = self.cleaned_data.get('auctionstart')
         current_date = timezone.now()
-
         auctioned_item = self.cleaned_data['itemid']
             
         auctions = Auction.objects.all()
@@ -114,11 +114,15 @@ class CreateStoreForm(forms.ModelForm):
 class editBoodleUserForm(forms.ModelForm):
     
     class Meta:
-        model = BoodleUser 
-        fields = ['displayname', 'username', 'userid']
-        widgets = {'userid': forms.HiddenInput()}
+        model = AuthUser 
+        fields = ['username', 'id']
+        widgets = {'id': forms.HiddenInput()}
 
         labels = {
-            'username': _('User Name'),
-            'displayname': _('Display Name')
+            'username': _('User Name')
         }
+
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model=User
+        fields=['username', 'email', 'password1', 'password2']

@@ -26,7 +26,7 @@ class AuctionBid(models.Model):
     amount = models.DecimalField(max_digits=15, decimal_places=4)
     bidtime = models.DateTimeField(blank=True, null=True)
     auctionid = models.ForeignKey(Auction, models.DO_NOTHING, db_column='auctionid')
-    boodleuserid = models.ForeignKey('BoodleUser', models.DO_NOTHING, db_column='boodleuserid')
+    userid = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='userid')
 
     class Meta:
         managed = False
@@ -99,20 +99,6 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
-class BoodleUser(models.Model):
-    userid = models.AutoField(primary_key=True)
-    displayname = models.CharField(max_length=255)
-    pword = models.CharField(max_length=255)
-    username = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'boodleuser'
-    
-    def __str__(self):
-        return '%s' % (self.userid)
-
-
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -168,7 +154,7 @@ class Item(models.Model):
     class Meta:
         managed = False
         db_table = 'item'
-    
+
     def __str__(self):
         return '%s' % (self.itemname)
 
@@ -178,11 +164,8 @@ class Store(models.Model):
     storeid = models.AutoField(primary_key=True)
     storename = models.CharField(max_length=255)
     storedesc = models.CharField(max_length=700)
-    userid = models.ForeignKey(BoodleUser, models.DO_NOTHING, db_column='userid', blank=True, null=True)
+    userid = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='userid', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'store'
-
-    def __str__(self):
-        return '%s' % (self.storeid)

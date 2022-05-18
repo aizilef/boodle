@@ -373,14 +373,6 @@ nav a {
   align-items: center;
 }
 
-/* item detail view / add, edit item */
-
-.item-image-container,
-.item-form-container {
-  border: 2px solid black;
-  padding: 1rem;
-}
-
 /* ?USER'S PROFILE */
 .profile-container {
   display: flex;
@@ -408,9 +400,52 @@ nav a {
   padding: 3rem;
 }
 
-.profile-submit-button {
-  border: none;
-  border-radius: 0.5rem;
-  padding: .3rem;
-  background-color: #F9BD82;
+/* About Page*/
+.about__container {
+  margin: 0 auto;
+  width: 90%;
+}
+
+.about__header{
+  text-align: center;
+}
+
+.about__blockone, .about__blocktwo, .about__blockthree {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.block-explanation{
+  width: 70%;
+  border-radius: 20px;
+  border: 5px black solid; 
+  padding: 20px;
+  margin: 10px;
+}
+
+.block-image, .row, .col {
+  text-align: center;
+  padding: 1rem;
+}
+
+.form-space, .button-space{
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+/* Add Item */
+.additem-container{
+  text-align: center;
+}
+
+/* item detail view / add, edit item */
+.item-form-container {
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+.storeform-header {
+  text-align: center;
 }

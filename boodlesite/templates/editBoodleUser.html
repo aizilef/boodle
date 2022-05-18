@@ -13,18 +13,17 @@
     <h1>{{ title }}</h1>
     <div class="">
         <div class="profile-form-container">
-            <div class="">EDIT PROFILE PICTURE
-                <div class="profile-image-container"></div>
-            </div>
             <form action="" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button class="profile-submit-button" type="submit" name="Add Item"> Save Changes </button>
+            <div class="button-space">
+                <button type="button" class="btn btn-danger"><a href= "{% url 'profileid' request.user.id %}">Cancel</a></button>
+                <button class="profile-submit-button btn btn-dark" type="submit" name="Add Item"> Save Changes </button>
+            </div>
             </form>
         </div>    
         
     </div>
-        <!--img goes here-->
 </div>
 
 {% endblock %}

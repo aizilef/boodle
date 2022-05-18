@@ -1,0 +1,79 @@
+{% extends 'boodlesite\templates\base.html' %}
+{% load static %}
+
+
+{% block title %}Boodle Homepage{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+
+<div class="about__header">
+    <h1>About Boodle</h1>
+</div>
+
+<div class="about__container"> 
+    <!-- overview -->
+    <div class="about__blockone">
+        <div class="block-image">
+            <img src="../static/media/block_one_pic.jpg">
+        </div>
+        <div class="block-explanation">
+            <h3>What is Boodle?</h3>
+            <p>
+            Boodle aims to provide an online bidding platform for online users. Its services are tailored specifically to bidding services to make communication and purchsing facilitation easier between buyers and sellers. For buyers, the common practice of "paunahan" is made easy for sellers can track which user bid on what and prevents issues such as scamming by correctly identifying the user with the highest bid.
+            </p>
+        </div>
+    </div>
+
+    <!-- About the product -->
+    <div class="about__blocktwo">
+        <div class="block-explanation">
+            <h3>Mission-Vision</h3>
+            <p>
+                Our mission has been to improve current bidding platforms and to provide a space for auctioneers and consumers to interact freely.
+                Boodle aims to provide sellers with the appropriate tools to auction items and aims to provide buyers a reliable platform for placing
+                bids on auctioned items.
+            </p>
+        </div>
+        <div class="block-image">
+            <img src="../static/media/block_two_pic.jpg">
+        </div>
+    </div>
+
+    <!-- About the makers -->
+    <div class="about__blockthree">
+        <div class="block-explanation">
+            <h3>Who are we?</h3>
+            <p> The developers are Computer Science students from Ateneo de Manila University. They consider themselves online shopaholics and so they
+                decided to create a platform for online auctions.
+            </p>
+        </div>
+    </div>
+    <div class="block-image">
+        <div class="row">
+            <div class="col">
+                <h6>Carmina Atienza</h6>
+                <img src="../static/media/profile_pics/didz.jpg">
+            </div>
+            <div class="col">
+                <h6>Christine Dela Rosa</h6>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h6>Martina Reyes</h6>
+                <img src="../static/media/profile_pics/mate.jpg">
+            </div>
+            <div class="col">
+                <h6>Felizia Tiburcio</h6>
+                <img src="../static/media/profile_pics/felizia.jpg">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

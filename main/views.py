@@ -143,6 +143,10 @@ def error404(request):
     return render(request, "boodlesite/templates/error404/notstarted_error404.html")
 
 @login_required(login_url='login')
+def about(request):
+    return render(request, "boodlesite/templates/about.html")
+
+@login_required(login_url='login')
 def mystore(request, pk):
 
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####

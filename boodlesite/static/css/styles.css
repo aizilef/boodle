@@ -382,14 +382,6 @@ nav a {
   padding: 4rem;
 }
 
-/* item detail view / add, edit item */
-
-.item-image-container,
-.item-form-container {
-  border: 2px solid black;
-  padding: 1rem;
-}
-
 /* ?USER'S PROFILE */
 .profile-container {
   display: flex;
@@ -438,3 +430,104 @@ nav a {
   background-color: #F9BD82;
 }
 
+/* About Page*/
+.about__container {
+  margin: 0 auto;
+  width: 90%;
+}
+
+.about__header{
+  text-align: center;
+}
+
+.about__blockone, .about__blocktwo, .about__blockthree {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.block-explanation{
+  width: 70%;
+  border-radius: 20px;
+  border: 5px black solid; 
+  padding: 20px;
+  margin: 10px;
+}
+
+.block-image, .row, .col {
+  text-align: center;
+  padding: 1rem;
+}
+
+.form-space, .button-space{
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+/* Add Item */
+.additem-container{
+  text-align: center;
+}
+
+/* item detail view / add, edit item */
+.item-form-container {
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+.storeform-header {
+  text-align: center;
+}
+
+/* girl help */
+.help-header{
+  background-color: #4c9ed0;
+  border-radius: 7px 7px 5px 0px;
+  padding: 10px;
+  color: #fff;
+  text-align: center;
+  font-family: Archivo;
+  font-size: 20px;
+}
+
+.help-container{
+  width: 500px;
+
+}
+
+.help-container{
+  width: 800px;
+  margin: 100px auto;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 1px 2px 4px rgba(0,0,0,.3);
+}
+
+.help-perq{
+  padding: 0px 20px 20px;
+}
+
+::-webkit-details-marker{
+  float: right;
+  margin-top: 3px;
+}
+
+.help-perq details{
+  background: #f6f6f6;
+  padding: 10px 20px;
+  border-radius: 7px;
+  margin-top: 20px;
+  font-family: Archivo;
+  font-size: 18px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.help-perq details summary{
+  outline: none;
+}
+
+.help-text {
+  font-size: 15px;
+}

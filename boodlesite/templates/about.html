@@ -1,0 +1,100 @@
+{% extends 'boodlesite\templates\base.html' %}
+{% load static %}
+
+
+{% block title %}Boodle Homepage{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+
+<div class="header-container">
+    <h1>About Boodle</h1>
+</div>
+
+<div class="about-container"> 
+    <!-- overview -->
+    <div class="about-block">
+        <div class="block-image">
+            <img src="../static/media/block_one_pic.jpg">
+        </div>
+        <div class="block-explanation">
+            <h2>What is Boodle?</h2>
+            <p>
+            Boodle aims to provide an online bidding platform for online users. Its services are tailored specifically to bidding services to make communication and purchasing facilitation easier between buyers and sellers. For buyers, the common practice of "paunahan" is made easy for sellers can track which user bid on what and prevents issues such as scamming by correctly identifying the user with the highest bid.
+            </p>
+        </div>
+    </div>
+
+    <!-- About the product -->
+    <div class="about-block">
+        <div class="block-explanation">
+            <h2>Mission-Vision</h2>
+            <p>
+                Our mission has been to improve current bidding platforms and to provide a space for auctioneers and consumers to interact freely.
+                Boodle aims to provide sellers with the appropriate tools to auction items and aims to provide buyers a reliable platform for placing
+                bids on auctioned items.
+            </p>
+        </div>
+        <div class="block-image">
+            <img src="../static/media/block_two_pic.jpg">
+        </div>
+    </div>
+
+    <!-- About the makers -->
+    <div class="about-block">
+        <div class="block-explanation">
+            <h2>Who are we?</h2>
+            <p> The developers are Computer Science students from Ateneo de Manila University. They consider themselves online shopaholics and so they
+                decided to create a platform for online auctions.
+            </p>
+        </div>
+    </div>
+
+    <div class="header-container">
+        <h1>Meet the Developers</h1>
+    </div>
+    
+  
+    <div class="about-developers">
+        <div class="developer">
+            <img src="../static/media/profile_pics/didz.jpg">
+            <div class="developer-info">
+                <h4>Carmina Atienza</h4>
+                <p>3 BS Computer Science</p>
+            </div>
+
+        </div>
+        <div class="developer">
+            <img src="../static/media/profile_pics/tin.jpg">
+            <div class="developer-info">
+                <h4>Christine Dela Rosa</h4>
+                <p>3 BS Computer Science</p>
+
+            </div>
+
+        </div>
+        <div class="developer">
+            <img src="../static/media/profile_pics/mate.jpg">
+             <div class="developer-info">
+                <h4>Martina Reyes</h4>
+                <p>3 BS Computer Science</p>
+
+            </div>
+
+        </div>
+        <div class="developer">
+            <img src="../static/media/profile_pics/felizia.jpg">
+            <div class="developer-info">
+                <h4>Felizia Tiburcio</h4>
+                <p>3 BS Computer Science</p>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

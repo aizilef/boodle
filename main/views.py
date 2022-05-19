@@ -147,6 +147,14 @@ def error404(request):
     return render(request, "boodlesite/templates/error404/notstarted_error404.html")
 
 @login_required(login_url='login')
+def about(request):
+    return render(request, "boodlesite/templates/about.html")
+
+@login_required(login_url='login')
+def help(request):
+    return render(request, "boodlesite/templates/help.html")
+
+@login_required(login_url='login')
 def mystore(request, pk):
 
     #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
@@ -156,6 +164,7 @@ def mystore(request, pk):
     store_items = Item.objects.filter(storeid=pk)
 
     all_auctions = Auction.objects.all()
+    all_bids = AuctionBid.objects.all()
 
     form = DeleteItemForm()
 
@@ -166,6 +175,11 @@ def mystore(request, pk):
             current_item = Item.objects.get(itemid=item_id)
             for auction in all_auctions:
                 if auction.itemid == current_item:
+
+                    for bids in all_bids:
+                        if bids.auctionid == auction:
+                            AuctionBid.objects.filter(auctionid=auction.auctionid).delete()
+
                     Auction.objects.filter(itemid=item_id).delete()
                     
             Item.objects.get(itemid=item_id).delete()
@@ -230,7 +244,7 @@ def startAuction(request, pk):
     current_store = Store.objects.get(pk=pk)
     store_id = current_store.storeid
     # get items under this store
-    store_items = Item.objects.filter(storeid=pk)
+    store_items = Item.objects.filter(storeid=store_id)
     # Current userid, change as per ⭐ whoever is logged in
     user = AuthUser.objects.get(id=request.user.id)
     userid = user.id
@@ -239,6 +253,7 @@ def startAuction(request, pk):
     all_auctions = Auction.objects.all()
 
     form = StartAuctionForm(initial={'auctionstart':datetime.now()})
+    form.fields["itemid"].queryset = store_items
 
     if request.method == 'POST':
         form = StartAuctionForm(request.POST)
@@ -285,6 +300,31 @@ def profile(request, pk):
     #💫auctionsOfUser = Auction.objects.all().distinct('auctionid')
     # get existing auctions for user's bids
     auctions = Auction.objects.all()
+
+    ### Purchase History ###
+
+    # Get auctionstart < currentdate auctions
+    current_date = datetime.now()
+    won_itemids = []
+    won_auctions = []
+
+    for aucid in ids_of_auction:
+
+        tempAuction = Auction.objects.get(pk=aucid.auctionid)
+        auctionend = tempAuction.auctionend
+
+        # finished auction, auctionend
+        if auctionend < current_date:
+            
+            bids = AuctionBid.objects.filter(auctionid=aucid).order_by('-bidtime')
+            highest_bidder = bids[0].boodleuserid
+
+            if highest_bidder.userid == current_user.userid:
+                itemid = aucid.itemid
+                itemid.sellprice = bids[0].amount
+                won_auctions.append(aucid)
+                won_itemids.append(itemid)
+
 
     # 🔥Current Store, pk here is the storeid
     current_user = AuthUser.objects.get(pk=pk)

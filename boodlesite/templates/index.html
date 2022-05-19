@@ -73,7 +73,7 @@
                 <p>Boodle was founded by a group of four talented software engineers, who are currently Computer Science students
                     in Ateneo de Manila University. They believed they could change the status quo
                     of the e-commerce world—and with Boodle, they did. </p>
-                <button id="btn-read-more">Read more</button>
+                <button class="btn profile-btn"><a href="{% url 'about' %}">Read more</a></button>
             </div>
         </div>
     </div>
@@ -87,9 +87,7 @@
     {% if auctions_now %}
     {% for auction in auctions_now %}
     <div class="event">
-        <!-- <img src="../static/media/beast.jpg" alt=""> -->
-        <img src="http://via.placeholder.com/640x360" alt="">
-
+        <img src="https://www.kurin.com/wp-content/uploads/placeholder-square.jpg">
         <div class="event-text">
             <a href="{% url 'auctionid' auction.auctionid %}">
                 <h4>{{ auction.title }}</h4>

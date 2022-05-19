@@ -57,11 +57,14 @@
     <div class="col-lg-5 col-md-6 auction-right">
 
       <div class="product-info" >
-        <h2>{{ item_name }} </h2>
-        <p>Sold by {{ auction_host.storename }}</p>
+        <div class="product-info-text">
+          <h2>{{ item_name }} </h2>
+        <p>Sold by <a href="{% url 'storeid' auction_host.storeid %}">{{ auction_host.storename }}</a></p>
 
         <p>{{ item_specs }}</p>
         <h4>Starting at: ₱ {{item_floor_price | floatformat:2 }}</h4>
+        </div>
+        
        
 
       </div>
@@ -78,7 +81,7 @@
         {% if auction_bids %}
         {% for bid in auction_bids %}
         <li><img src="https://minimaltoolkit.com/images/randomdata/female/64.jpg" alt="">
-          <p>{{bid.userid.username}} offered  ₱{{ bid.amount | floatformat:2}}</p>
+          <p><a href="{% url 'profileid' bid.userid.id %}">{{bid.userid.username}}</a> offered  ₱{{ bid.amount | floatformat:2}}</p>
           <p> &nbsp | &nbsp </p>
           <p>{{bid.bidtime | timesince}} ago </p>
 

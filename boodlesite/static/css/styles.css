@@ -582,3 +582,7 @@ nav a {
 .help-text {
   font-size: 15px;
 }
+
+.link-text {
+  color: white;
+}

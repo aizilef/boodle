@@ -17,7 +17,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
             <div class="btn-group">
-                <button type="button" class="btn btn-danger"><a href= "{% url 'profileid' request.user.id %}">Cancel</a></button>
+                <button type="button" class="btn btn-danger"><a class="link-text" href= "{% url 'profileid' request.user.id %}">Cancel</a></button>
                 <button class="btn profile-btn" type="submit" name="Add Item"> Save Changes </button>
             </div>
             </form>

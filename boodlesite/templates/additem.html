@@ -18,7 +18,7 @@
                 {{ form.as_p }}
             </div>
             <div class="button-space">
-                <button type="button" class="btn btn-danger"><a href= "{% url 'storeid' request.user.id %}">Cancel</a></button>
+                <button type="button" class="btn btn-danger"><a class="link-text" href= "{% url 'storeid' request.user.id %}">Cancel</a></button>
                 <button type="submit" class="btn btn-dark" name="Add Item"> Add Item </button>
             </div>
         </form>

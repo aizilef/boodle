@@ -16,7 +16,9 @@ from .forms import *
 from datetime import datetime, timedelta
 
 def registerPage(request):
-    # dont want a logged in user to see this
+    ''' 
+    Any user can only register an account on Boodle. They must give a unique username or they will be asked to input another one. A logged-in user cannot see the registration page unless they log-out of Boodle.
+    '''
     if request.user.is_authenticated:
         return redirect('/')
     else:
@@ -29,9 +31,6 @@ def registerPage(request):
                 password = form.cleaned_data.get('password1')
                 messages.success(request, 'Account was create for ' + user_name)
 
-                # boodleuser_inst = BoodleUser.objects.create(displayname=user_name, pword=password, username=user_name)
-                # boodleuser_inst.save()
-
                 return redirect('login')
             
 
@@ -39,8 +38,12 @@ def registerPage(request):
         return render(request, 'boodlesite/templates/registration/register.html', context)
 
 def loginPage(request):
-
-    # dont want a logged in user to see this
+    ''' 
+    A user can only log in if they have registered account on Boodle. 
+    They must input the correct password and username or else they won't be let in the site. 
+    They will be redirected to Boodle's home page if credentials are valid.
+    A logged-in user cannot see the log-in page unless they log-out of Boodle.
+    '''
     if request.user.is_authenticated:
         return redirect('/')
     else:
@@ -53,29 +56,32 @@ def loginPage(request):
                 login(request, boodle_user)
                 return redirect('/')
             else:
-                messages.info(request, 'Username OR Password is incorrect') # all msgs get sent here will be output
-                
-        context = {}
-        return render(request, 'boodlesite/templates/registration/login.html', context)
+                messages.info(request, 'Username OR Password is incorrect')
+
+        return render(request, 'boodlesite/templates/registration/login.html')
 
 def logoutUser(request):
+    ''' 
+    Logs auser out of their Boodle account. 
+    Redirects a user to the login page when activated.
+    '''
     logout(request)
     return redirect('login')
 
 @login_required(login_url='login')
 def homepage(request):
-    print(Auction.objects.all())
-
-    # Filter by auctions happening right now
+    '''
+    Only a logged-in user has access to this view. 
+    A logged-in user has access to the current and future auctions. They may choose from the selection on which they would like to participate in. 
+    These auctions are available only at the end time set by the seller. This applies to both current and future auctions.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
     auctions_now = Auction.objects.filter(auctionstart__lt=datetime.now(),auctionend__gt=datetime.now())
     for auction in auctions_now:
         print(auction)
 
-    # Filter by auctions scheduled at most a week from now
     week_range = datetime.now() + timedelta(days=7)
     auctions_soon = Auction.objects.filter(auctionstart__lt=week_range).exclude(auctionstart__lte=datetime.now())
-    for auction in auctions_soon:
-        print(auction)    
 
     context = {
         'auctions_now': auctions_now,
@@ -86,19 +92,17 @@ def homepage(request):
 
 @login_required(login_url='login')
 def auction(request,pk):
-
-    # Current auction ID
+    '''
+    Only a logged-in user has access to this view. 
+    An auction is viewable only when it is ongoing. A user cannot view past nor future auctions -- they will receive an error page if they try to access future auctions. This indicates they should go back to the home screen.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
     auction = Auction.objects.get(pk=pk)
-    # Item for auction
-    auction_item = auction.itemid # this is the itemfk thru auction
-    # Host
+    auction_item = auction.itemid 
     auction_host = auction_item.storeid
 
-    # Auction bids
     auction_bids = AuctionBid.objects.filter(auctionid=pk).order_by('-bidtime')
     highest_bid = auction_item.floorprice 
-    
-    ## ⭐ the user that is logged in
 
     users = AuthUser.objects.get(id=request.user.id) 
     userid = users.id 
@@ -113,11 +117,10 @@ def auction(request,pk):
         if form.is_valid():
             try:
                 amount = form.cleaned_data['amount']
-                # saves the bid by auctionid, amount, bidtime, boodleuserid
                 new_bid = AuctionBid(
                     amount=amount, bidtime=datetime.now(),
                     auctionid=auction, userid=users)
-                new_bid.save()
+                new_bid.save()       # saves the bid by auctionid, amount, bidtime, boodleuserid
                 return redirect(f"/auction/{pk}")
             except Exception as e:
                 print("Error:", e)
@@ -136,29 +139,58 @@ def auction(request,pk):
     }
 
     if auction.auctionend < datetime.now():
-        return HttpResponse("This auction has already passed.")
+        return render(request, "boodlesite/templates/error404/passed_error404.html")
     elif auction.auctionstart > datetime.now():
         return render(request, "boodlesite/templates/error404/notstarted_error404.html")
     else:
         return render(request, "boodlesite/templates/auction.html",context)    
 
 @login_required(login_url='login')
-def error404(request):
+def passed_auction_error404(request):
+    '''
+    Only a logged-in user has access to this view. 
+    A user receives this view when they try to view passed auctions.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
+    return render(request, "boodlesite/templates/error404/passed_error404.html")
+
+
+@login_required(login_url='login')
+def future_auction_error404(request):
+    '''
+    Only a logged-in user has access to this view. 
+    A user receives this view when they try to view future auctions.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
     return render(request, "boodlesite/templates/error404/notstarted_error404.html")
 
 @login_required(login_url='login')
 def about(request):
+    '''
+    Only a logged-in user has access to this view. 
+    This shows relevant information on Boodle and the creators.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
     return render(request, "boodlesite/templates/about.html")
 
 @login_required(login_url='login')
 def help(request):
+    '''
+    Only a logged-in user has access to this view. 
+    This shows relevant information on how to use Boodle.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
     return render(request, "boodlesite/templates/help.html")
 
 @login_required(login_url='login')
 def mystore(request, pk):
-
-    #### Access to store 1 [ edit accordingly when it becomes accessible thru a user ] ####
-    # pk is storeid
+    '''
+    Only a logged-in user has access to this view. 
+    This shows the store owned by a user. If a user has not made a store, this view is not available to them. The store contains items they want to/currently put on auction.
+    This view is where a user [seller] can start an auction to be put up in the homepage for every user [buyers and sellers] to see.
+    The user [seller] can also edit the item details and store details in this view.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
     current_store = Store.objects.get(pk=pk)
     store_owner = current_store.userid
     store_items = Item.objects.filter(storeid=pk)
@@ -197,8 +229,11 @@ def mystore(request, pk):
 
 @login_required(login_url='login')
 def addItem(request, pk):
-
-    # Current Store, pk here is the storeid
+    '''
+    Only a logged-in user has access to this view. 
+    This view is a form wherin users [sellers] can add items to their store. After successfully making the item, they will be redirected back to the store.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
     current_store = Store.objects.get(pk=pk)
 
     form = AddItemForm(initial={'storeid':current_store})
@@ -219,6 +254,11 @@ def addItem(request, pk):
 
 @login_required(login_url='login')
 def editItem(request, pk):
+    '''
+    Only a logged-in user has access to this view. 
+    This view is a form wherin users [sellers] can edit item details on their store. After successfully editing the item, they will be redirected back to the store.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
 
     item = Item.objects.get(itemid=pk)
     current_store = item.storeid
@@ -239,18 +279,18 @@ def editItem(request, pk):
 
 @login_required(login_url='login')
 def startAuction(request, pk):
+    '''
+    Only a logged-in user has access to this view. 
+    This view is a form wherin users [sellers] can start an auction to be viewed and accessed by the public.
+    They will have to fill in the details of their auction such as when they want it to start and end, and the particular item that is up for grabs.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
 
-    # pk is store id
     current_store = Store.objects.get(pk=pk)
     store_id = current_store.storeid
-    # get items under this store
     store_items = Item.objects.filter(storeid=store_id)
-    # Current userid, change as per ⭐ whoever is logged in
     user = AuthUser.objects.get(id=request.user.id)
     userid = user.id
-
-    # temp: all auctions
-    all_auctions = Auction.objects.all()
 
     form = StartAuctionForm(initial={'auctionstart':datetime.now()})
     form.fields["itemid"].queryset = store_items
@@ -281,10 +321,13 @@ def startAuction(request, pk):
 
 @login_required(login_url='login')
 def profile(request, pk):
-    
+    '''
+    Only a logged-in user has access to this view. 
+    This view is where the user can see the details of their profile. They have the option to make a store, access their store (only when they've made one) and edit their profile details.
+    The user can also see the auctions they have participated in.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
     current_user = AuthUser.objects.get(pk=pk)
-    #auction bid user id = 3 --> bids user made --> know auctions g
-    ## ⭐ the user that is logged in
     bids_by_user = AuctionBid.objects.filter(userid=pk).distinct('auctionid')
 
     auctions_of_user = Auction.objects.all().distinct('auctionid')
@@ -294,28 +337,18 @@ def profile(request, pk):
         for auction in auctions_of_user:
             if bid.auctionid == auction:
                 ids_of_auction.append(bid.auctionid)
-                
-    # print("These are the distinct auction IDs: ", idsOfAuction)
-
-    #💫auctionsOfUser = Auction.objects.all().distinct('auctionid')
-    # get existing auctions for user's bids
     auctions = Auction.objects.all()
 
-    ### Purchase History ###
-
-    # Get auctionstart < currentdate auctions
+    # ITEMS USER BID ON
     current_date = datetime.now()
     won_itemids = []
     won_auctions = []
 
     for aucid in ids_of_auction:
-
         tempAuction = Auction.objects.get(pk=aucid.auctionid)
         auctionend = tempAuction.auctionend
 
-        # finished auction, auctionend
         if auctionend < current_date:
-            
             bids = AuctionBid.objects.filter(auctionid=aucid).order_by('-bidtime')
             highest_bidder = bids[0].userid
 
@@ -326,7 +359,6 @@ def profile(request, pk):
                 won_itemids.append(itemid)
 
 
-    # 🔥Current Store, pk here is the storeid
     current_user = AuthUser.objects.get(pk=pk)
     form = CreateStoreForm(initial={'userid':pk})
 
@@ -337,12 +369,10 @@ def profile(request, pk):
         current_storeid = i.storeid
 
     if request.method == 'POST':
-        form = CreateStoreForm(request.POST, initial={'userid':pk}) 
-        # putting a default value
+        form = CreateStoreForm(request.POST, initial={'userid':pk})
         if form.is_valid():
             form.save()
             return redirect('profileid', pk=pk)
-    # 🔥 
 
     context = {
         'displayname': current_user.username,
@@ -362,6 +392,11 @@ def profile(request, pk):
 
 @login_required(login_url='login')
 def editStore(request, pk):
+    '''
+    Only a logged-in user has access to this view. 
+    This view is a form wherin users [sellers] can edit their store details such as the name of the store and the store description. After successfully saving, the user is redirected to the store page.
+    AA user also has access to the other parts of the site from here through the navigation bar.
+    '''
 
     store= Store.objects.get(storeid=pk)
     current_store = store.storeid
@@ -382,9 +417,15 @@ def editStore(request, pk):
 
 @login_required(login_url='login')
 def editProfile(request, pk):
+    '''
+    Only a logged-in user has access to this view. 
+    This view is a form wherin users [sellers] can edit their profile details. 
+    After successfully saving, the user is redirected to their profile page.
+    A user also has access to the other parts of the site from here through the navigation bar.
+    '''
 
-    user= AuthUser.objects.get(id=pk) # authuser object
-    current_user = user.id # auth user id
+    user= AuthUser.objects.get(id=pk)
+    current_user = user.id
     form = editBoodleUserForm(instance=user)
 
     if request.method == 'POST':

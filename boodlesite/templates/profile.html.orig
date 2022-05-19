@@ -63,14 +63,8 @@
     <h2> Current Biddings</h2>
 </div>
 <div class="event-container">
-<<<<<<< HEAD
     {% if auctions_of_user %}
     {% for id in ids_of_auction %} 
-=======
-    {% if auctionsOfUser %}
-    {% for id in idsOfAuction %} 
-        {% if id.auctionend > currentdate %}
->>>>>>> origin/xtine
         <div class="event">
             <img src="http://via.placeholder.com/640x360" alt="">
             <div class="event-text">

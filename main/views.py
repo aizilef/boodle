@@ -317,9 +317,9 @@ def profile(request, pk):
         if auctionend < current_date:
             
             bids = AuctionBid.objects.filter(auctionid=aucid).order_by('-bidtime')
-            highest_bidder = bids[0].boodleuserid
+            highest_bidder = bids[0].userid
 
-            if highest_bidder.userid == current_user.userid:
+            if highest_bidder.id == current_user.id:
                 itemid = aucid.itemid
                 itemid.sellprice = bids[0].amount
                 won_auctions.append(aucid)
@@ -351,6 +351,8 @@ def profile(request, pk):
         'store': current_storeid,
         'bidsByUser' : bids_by_user,
         'auctions_of_user': auctions_of_user,
+        'won_items': won_itemids,
+        'won_auctions': won_auctions,
         'auctions': auctions,
         'ids_of_auction': ids_of_auction,
         'createStoreForm': form

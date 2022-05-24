@@ -222,6 +222,7 @@ def mystore(request, pk):
         'current_store':current_store,
         'store_owner':store_owner,
         'store_items':store_items,
+        'all_auctions':all_auctions,
         'form':form
     }
 
@@ -259,7 +260,7 @@ def editItem(request, pk):
     This view is a form wherin users [sellers] can edit item details on their store. After successfully editing the item, they will be redirected back to the store.
     A user also has access to the other parts of the site from here through the navigation bar.
     '''
-
+    
     item = Item.objects.get(itemid=pk)
     current_store = item.storeid
     form = AddItemForm(instance=item)
@@ -268,10 +269,11 @@ def editItem(request, pk):
         form = AddItemForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('storeid', pk=current_store)
+            return redirect('storeid', pk=current_store.storeid)
 
     context = {
         'form':form,
+        'current_store':current_store,
         'title': 'Edit item information'
     }
 
@@ -285,7 +287,7 @@ def startAuction(request, pk):
     They will have to fill in the details of their auction such as when they want it to start and end, and the particular item that is up for grabs.
     A user also has access to the other parts of the site from here through the navigation bar.
     '''
-
+    all_auctions = Auction.objects.all()
     current_store = Store.objects.get(pk=pk)
     store_id = current_store.storeid
     store_items = Item.objects.filter(storeid=store_id)
@@ -399,7 +401,7 @@ def editStore(request, pk):
     '''
 
     store= Store.objects.get(storeid=pk)
-    current_store = store.storeid
+    current_store = store.stgitoreid
     form = CreateStoreForm(instance=store)
 
     if request.method == 'POST':
@@ -410,6 +412,7 @@ def editStore(request, pk):
 
     context = {
         'form': form,
+        'current_store':current_store,
         'title': 'Edit Store Information'
     }
 
